@@ -11,6 +11,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import BestSellingProducts from "../components/BestSellingProducts";
+import PromoBanners from "../components/PromoBanners";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,6 +59,7 @@ export default function Home() {
   const serviceCards = [
     {
       title: "Cloud Hosting",
+      bg: "bg-gradient-to-br from-emerald-50 to-teal-100",
       description:
         "Flexible hosting environments for growing businesses and digital platforms.",
       metric: "99.9% uptime",
@@ -64,6 +67,7 @@ export default function Home() {
     },
     {
       title: "Data Storage",
+      bg: "bg-gradient-to-br from-cyan-50 to-sky-100",
       description:
         "Secure storage architecture with dependable access and backup readiness.",
       metric: "Enterprise secure",
@@ -71,6 +75,7 @@ export default function Home() {
     },
     {
       title: "Dedicated Servers",
+      bg: "bg-gradient-to-br from-blue-50 to-indigo-100",
       description:
         "High-performance infrastructure for apps, analytics, and business operations.",
       metric: "Fast deployment",
@@ -82,6 +87,78 @@ export default function Home() {
     { value: "250+", label: "Projects delivered" },
     { value: "24/7", label: "Technical support" },
     { value: "99.9%", label: "Service reliability" },
+  ];
+
+  const bestSellingProducts = [
+    {
+      id: 1,
+      name: "Cloud VPS Pro",
+      category: "Hosting",
+      price: "$49/mo",
+      rating: "4.9",
+      badge: "Best Seller",
+      description: "Managed VPS hosting with fast setup, SSD storage, and strong uptime.",
+      image:
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80",
+    },
+    {
+      id: 2,
+      name: "Dedicated Server X",
+      category: "Servers",
+      price: "$129/mo",
+      rating: "4.8",
+      badge: "Popular",
+      description: "High-performance server built for business apps, portals, and heavy traffic.",
+      image:
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
+    },
+    {
+      id: 3,
+      name: "Secure Backup Storage",
+      category: "Storage",
+      price: "$29/mo",
+      rating: "4.7",
+      badge: "Top Rated",
+      description: "Reliable cloud backup storage for teams that need secure daily protection.",
+      image:
+        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",
+    },
+    {
+      id: 4,
+      name: "Business Cloud Suite",
+      category: "Cloud",
+      price: "$89/mo",
+      rating: "4.9",
+      badge: "Featured",
+      description: "Scalable infrastructure package for modern businesses and digital products.",
+      image:
+        "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80",
+    },
+  ];
+
+  const promoBanners = [
+    {
+      id: 1,
+      label: "Limited Offer",
+      title: "Save more on premium cloud hosting plans",
+      description:
+        "Launch faster with business-ready hosting packages built for speed, uptime, and easy scaling.",
+      buttonLabel: "See plans",
+      image:
+        "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+      themeClass: "bg-gradient-to-br from-blue-700 via-blue-600 to-sky-500",
+    },
+    // {
+    //   id: 2,
+    //   label: "New Arrival",
+    //   title: "Explore new dedicated server bundles",
+    //   description:
+    //     "Powerful hardware options for teams that need reliability, control, and stronger backend performance.",
+    //   buttonLabel: "Discover now",
+    //   image:
+    //     "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=80",
+    //   themeClass: "bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-600",
+    // },
   ];
 
   return (
@@ -212,7 +289,7 @@ export default function Home() {
                 <div>
                   <p className="text-sm font-medium text-blue-700">Homepage Preview</p>
                   <h2 className="mt-2 text-2xl font-semibold text-slate-900">
-                    Clear structure. Better trust. More impact.
+                    Modern layout with a stronger visual focus.
                   </h2>
                 </div>
                 <div className="rounded-2xl bg-blue-50 p-3 text-blue-700">
@@ -220,48 +297,24 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="mt-8 space-y-4">
-                <div className="rounded-3xl bg-slate-950 px-6 py-5 text-white">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-blue-200">Featured Solution</div>
-                      <div className="mt-2 text-xl font-semibold">
-                        Scalable Cloud Infrastructure
-                      </div>
-                    </div>
-                    <div className="rounded-full bg-blue-500/20 px-3 py-1 text-xs font-medium text-blue-100">
-                      Live
-                    </div>
-                  </div>
+              <div className="mt-8 space-y-5">
+                <div className="overflow-hidden rounded-[28px] border border-blue-100 bg-slate-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
+                    alt="Modern digital workspace"
+                    className="h-[420px] w-full object-cover"
+                  />
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-blue-100 bg-blue-50 p-5">
-                    <div className="text-sm text-slate-500">Performance Focus</div>
-                    <div className="mt-2 text-2xl font-semibold text-slate-900">Fast, stable, modern</div>
-                    <div className="mt-2 text-sm text-slate-600">
-                      Messaging and styling aligned to white-and-blue branding.
+                <div className="flex items-center justify-between rounded-3xl border border-blue-100 bg-gradient-to-r from-white to-blue-50 px-5 py-4">
+                  <div>
+                    <div className="text-sm text-slate-500">Visual Direction</div>
+                    <div className="mt-1 text-lg font-semibold text-slate-900">
+                      Bigger imagery with less clutter
                     </div>
                   </div>
-
-                  <div className="rounded-3xl border border-slate-200 bg-white p-5">
-                    <div className="text-sm text-slate-500">Design Language</div>
-                    <div className="mt-2 text-2xl font-semibold text-slate-900">Soft cards, clean spacing</div>
-                    <div className="mt-2 text-sm text-slate-600">
-                      Modern sections with better contrast and lighter visuals.
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-3xl border border-blue-100 bg-gradient-to-r from-white to-blue-50 p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <div className="text-sm text-slate-500">User Experience</div>
-                      <div className="mt-1 text-lg font-semibold text-slate-900">
-                        Stronger first impression with cleaner text hierarchy
-                      </div>
-                    </div>
-                    <div className="text-sm font-semibold text-blue-700">Updated</div>
+                  <div className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
+                    Updated
                   </div>
                 </div>
               </div>
@@ -269,6 +322,70 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-7xl rounded-[36px] border border-blue-100 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] lg:p-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Services
+              </p>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
+                Designed to present your core offerings with more polish.
+              </h2>
+            </div>
+            <p className="max-w-xl text-slate-600">
+              Each block is styled with cleaner typography, softer borders, and a white-blue palette that feels modern without being heavy.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {serviceCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className={`rounded-[28px] border border-slate-200 p-7 transition hover:border-blue-200 hover:bg-white ${card.bg}`}
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="mt-6 text-sm font-medium text-blue-700">{card.metric}</div>
+                  <h3 className="mt-2 text-2xl font-semibold text-slate-900">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{card.description}</p>
+                  <button className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-blue-700">
+                    Learn more
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <BestSellingProducts
+        eyebrow="Featured Catalog"
+        title="Best selling products"
+        description="A reusable product section styled like modern e-commerce cards. Just change the heading and product array wherever you want to use it."
+        ctaLabel="Browse catalog"
+        products={bestSellingProducts}
+      />
+
+      <BestSellingProducts
+        eyebrow="Top Picked by Customers"
+        title="Servers series"
+        description="Explore our most popular server solutions, trusted by businesses for performance and reliability. These top-rated products are designed to meet the needs of modern digital platforms."
+        ctaLabel="Browse catalog"
+        products={bestSellingProducts}
+      />
+
+      <PromoBanners
+        eyebrow="Special Highlights"
+        title="Dynamic promotional banners"
+        description="This banner section is reusable too. You can change the heading and pass any banner items you want to feature."
+        banners={promoBanners}
+      />
 
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
@@ -298,47 +415,6 @@ export default function Home() {
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-slate-900">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl rounded-[36px] border border-blue-100 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] lg:p-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-                Services
-              </p>
-              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-                Designed to present your core offerings with more polish.
-              </h2>
-            </div>
-            <p className="max-w-xl text-slate-600">
-              Each block is styled with cleaner typography, softer borders, and a white-blue palette that feels modern without being heavy.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {serviceCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div
-                  key={card.title}
-                  className="rounded-[28px] border border-slate-200 bg-slate-50 p-7 transition hover:border-blue-200 hover:bg-white"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="mt-6 text-sm font-medium text-blue-700">{card.metric}</div>
-                  <h3 className="mt-2 text-2xl font-semibold text-slate-900">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{card.description}</p>
-                  <button className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-blue-700">
-                    Learn more
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
                 </div>
               );
             })}
