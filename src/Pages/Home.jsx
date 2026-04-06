@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import BestSellingProducts from "../components/BestSellingProducts";
 import PromoBanners from "../components/PromoBanners";
+import Navbar from "../components/Navbar";
+import SolutionsSection from "../components/Solutions";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -167,7 +169,9 @@ export default function Home() {
         <div className="mx-auto h-[420px] max-w-6xl rounded-b-[48px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.22),_transparent_40%),radial-gradient(circle_at_top_right,_rgba(96,165,250,0.18),_transparent_35%),linear-gradient(180deg,_#ffffff_0%,_#eff6ff_55%,_#f8fafc_100%)]" />
       </div>
 
-      <nav
+      <Navbar/>
+
+      {/* <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? "border-b border-blue-100 bg-white/85 shadow-[0_12px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl"
@@ -242,7 +246,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </nav>
+      </nav> */}
 
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">
@@ -323,7 +327,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-20">
+      {/* <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl rounded-[36px] border border-blue-100 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] lg:p-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
@@ -362,7 +366,7 @@ export default function Home() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <BestSellingProducts
         eyebrow="Featured Catalog"
@@ -422,7 +426,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-20">
+      {/* <section className="px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[32px] bg-slate-950 p-10 text-white shadow-[0_20px_60px_rgba(15,23,42,0.18)]">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
@@ -478,7 +482,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+      <SolutionsSection/>
 
       <section className="px-6 pt-10 pb-24">
         <div className="mx-auto max-w-5xl rounded-[36px] border border-blue-100 bg-gradient-to-br from-blue-600 to-sky-500 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
