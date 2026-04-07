@@ -5,7 +5,7 @@ export const productCatalog = [
     category: "Hosting",
     type: "Virtual Servers",
     price: 49,
-    priceLabel: "$49/mo",
+    priceLabel: "49Rs/mo",
     rating: 4.9,
     badge: "Best Seller",
     description:
@@ -21,7 +21,7 @@ export const productCatalog = [
     category: "Servers",
     type: "Bare Metal",
     price: 129,
-    priceLabel: "$129/mo",
+    priceLabel: "129Rs/mo",
     rating: 4.8,
     badge: "Popular",
     description:
@@ -37,7 +37,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Backup",
     price: 29,
-    priceLabel: "$29/mo",
+    priceLabel: "29Rs/mo",
     rating: 4.7,
     badge: "Top Rated",
     description:
@@ -53,7 +53,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Enterprise Cloud",
     price: 89,
-    priceLabel: "$89/mo",
+    priceLabel: "89Rs/mo",
     rating: 4.9,
     badge: "Featured",
     description:
@@ -69,7 +69,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Performance",
     price: 35,
-    priceLabel: "$35/mo",
+    priceLabel: "35Rs/mo",
     rating: 4.6,
     badge: "Fast Delivery",
     description:
@@ -85,7 +85,7 @@ export const productCatalog = [
     category: "Servers",
     type: "GPU Compute",
     price: 179,
-    priceLabel: "$179/mo",
+    priceLabel: "179Rs/mo",
     rating: 4.9,
     badge: "New",
     description:
@@ -101,7 +101,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Cold Storage",
     price: 19,
-    priceLabel: "$19/mo",
+    priceLabel: "19Rs/mo",
     rating: 4.5,
     badge: "Budget Pick",
     description:
@@ -117,7 +117,7 @@ export const productCatalog = [
     category: "Hosting",
     type: "Containers",
     price: 149,
-    priceLabel: "$149/mo",
+    priceLabel: "149Rs/mo",
     rating: 4.8,
     badge: "Enterprise",
     description:
@@ -133,7 +133,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Connectivity",
     price: 99,
-    priceLabel: "$99/mo",
+    priceLabel: "99Rs/mo",
     rating: 4.7,
     badge: "Hybrid Ready",
     description:
@@ -149,7 +149,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Business Continuity",
     price: 119,
-    priceLabel: "$119/mo",
+    priceLabel: "119Rs/mo",
     rating: 4.8,
     badge: "Protected",
     description:
@@ -165,7 +165,7 @@ export const productCatalog = [
     category: "Hosting",
     type: "Shared Cloud",
     price: 15,
-    priceLabel: "$15/mo",
+    priceLabel: "15Rs/mo",
     rating: 4.4,
     badge: "Starter",
     description:
@@ -181,7 +181,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Private Cloud",
     price: 159,
-    priceLabel: "$159/mo",
+    priceLabel: "159Rs/mo",
     rating: 4.9,
     badge: "Premium",
     description:
@@ -197,7 +197,7 @@ export const productCatalog = [
     category: "Servers",
     type: "Bare Metal",
     price: 129,
-    priceLabel: "$129/mo",
+    priceLabel: "129Rs/mo",
     rating: 4.8,
     badge: "Popular",
     description:
@@ -213,7 +213,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Backup",
     price: 29,
-    priceLabel: "$29/mo",
+    priceLabel: "29Rs/mo",
     rating: 4.7,
     badge: "Top Rated",
     description:
@@ -229,7 +229,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Enterprise Cloud",
     price: 89,
-    priceLabel: "$89/mo",
+    priceLabel: "89Rs/mo",
     rating: 4.9,
     badge: "Featured",
     description:
@@ -245,7 +245,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Performance",
     price: 35,
-    priceLabel: "$35/mo",
+    priceLabel: "35Rs/mo",
     rating: 4.6,
     badge: "Fast Delivery",
     description:
@@ -261,7 +261,7 @@ export const productCatalog = [
     category: "Servers",
     type: "GPU Compute",
     price: 179,
-    priceLabel: "$179/mo",
+    priceLabel: "179Rs/mo",
     rating: 4.9,
     badge: "New",
     description:
@@ -277,7 +277,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Cold Storage",
     price: 19,
-    priceLabel: "$19/mo",
+    priceLabel: "19Rs/mo",
     rating: 4.5,
     badge: "Budget Pick",
     description:
@@ -293,7 +293,7 @@ export const productCatalog = [
     category: "Hosting",
     type: "Containers",
     price: 149,
-    priceLabel: "$149/mo",
+    priceLabel: "149Rs/mo",
     rating: 4.8,
     badge: "Enterprise",
     description:
@@ -309,7 +309,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Connectivity",
     price: 99,
-    priceLabel: "$99/mo",
+    priceLabel: "99Rs/mo",
     rating: 4.7,
     badge: "Hybrid Ready",
     description:
@@ -325,7 +325,7 @@ export const productCatalog = [
     category: "Storage",
     type: "Business Continuity",
     price: 119,
-    priceLabel: "$119/mo",
+    priceLabel: "119Rs/mo",
     rating: 4.8,
     badge: "Protected",
     description:
@@ -341,7 +341,7 @@ export const productCatalog = [
     category: "Hosting",
     type: "Shared Cloud",
     price: 15,
-    priceLabel: "$15/mo",
+    priceLabel: "15Rs/mo",
     rating: 4.4,
     badge: "Starter",
     description:
@@ -357,7 +357,7 @@ export const productCatalog = [
     category: "Cloud",
     type: "Private Cloud",
     price: 159,
-    priceLabel: "$159/mo",
+    priceLabel: "159Rs/mo",
     rating: 4.9,
     badge: "Premium",
     description:

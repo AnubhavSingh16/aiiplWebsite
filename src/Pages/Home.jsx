@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, ChevronRight, Server, Shield, Zap } from "lucide-react";
+import { Activity, ChevronRight, Cpu, Server, Shield, Sparkles, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import BestSellingProducts from "../components/BestSellingProducts";
 import PromoBanners from "../components/PromoBanners";
@@ -89,9 +89,12 @@ export default function Home() {
                 Explore Products
                 <ChevronRight className="h-4 w-4" />
               </Link>
-              <button className="rounded-full border border-blue-100 bg-white px-6 py-3.5 font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-700">
-                Talk to Our Team
-              </button>
+              <Link
+                to="/build-pc"
+                className="rounded-full border border-emerald-100 bg-white px-6 py-3.5 font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
+              >
+                Build Custom PC
+              </Link>
             </div>
 
             <div className="mt-12 grid gap-6 sm:grid-cols-3">
@@ -161,6 +164,60 @@ export default function Home() {
         products={bestSellingProducts}
       />
 
+      <section className="px-6 pb-20">
+        <div className="mx-auto grid max-w-7xl gap-8 rounded-[36px] border border-emerald-100 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.18),_transparent_28%),linear-gradient(135deg,_#06121f_0%,_#0f172a_48%,_#0b2745_100%)] p-8 text-white shadow-[0_24px_80px_rgba(15,23,42,0.18)] lg:grid-cols-[1fr_380px] lg:items-center lg:p-10">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-emerald-200">
+              <Sparkles className="h-4 w-4" />
+              New Interactive Builder
+            </div>
+            <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-white md:text-5xl">
+              Create a custom PC build with live visual assembly.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+              Choose processors, graphics, memory, storage, cooling, and display options,
+              then watch your machine come together in a more dynamic builder experience.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                to="/build-pc"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-slate-100"
+              >
+                Start Building
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/products"
+                className="rounded-full border border-white/15 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
+              >
+                Browse Parts Catalog
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/70 p-6 shadow-[inset_0_0_40px_rgba(59,130,246,0.08)]">
+            <div className="absolute inset-x-8 top-0 h-24 bg-gradient-to-b from-emerald-400/20 to-transparent blur-2xl" />
+            <div className="relative mx-auto max-w-[280px] rounded-[28px] border border-white/10 bg-slate-900 px-5 py-6">
+              <div className="h-2 overflow-hidden rounded-full bg-white/5">
+                <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500" />
+              </div>
+              <div className="mt-5 space-y-3">
+                {["CPU installed", "GPU selected", "RAM configured", "Cooling mounted"].map((item, index) => (
+                  <div
+                    key={item}
+                    className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-4 py-3 text-sm text-slate-200 animate-pulse"
+                    style={{ animationDelay: `${index * 180}ms` }}
+                  >
+                    <span>{item}</span>
+                    <Cpu className="h-4 w-4 text-emerald-300" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <PromoBanners
         eyebrow="Special Highlights"
         title="Dynamic promotional banners"
@@ -206,20 +263,26 @@ export default function Home() {
       <SolutionsSection />
 
       <section className="px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-5xl rounded-[36px] border border-blue-100 bg-gradient-to-br from-blue-600 to-sky-500 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
+        <div className="mx-auto max-w-6xl rounded-[36px] border border-blue-100 bg-gradient-to-l from-blue-600 to-sky-300 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
           <h2 className="text-4xl font-semibold tracking-tight">
-            Ready for a cleaner and more modern homepage?
+            Talk to an expert.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-blue-50">
-            This layout now follows a white and blue design direction with improved wording, brighter sections, and a more modern overall feel.
+            Have a question? Our team is here to help you find the right solution for your business.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <button className="rounded-full bg-white px-6 py-3.5 font-semibold text-blue-700 transition hover:bg-slate-100">
+            <Link
+              to="/contact"
+              className="rounded-full bg-white px-6 py-3.5 font-semibold text-blue-700 transition hover:bg-slate-100"
+            >
               Request a Demo
-            </button>
-            <button className="rounded-full border border-white/40 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
+            </Link>
+            <Link
+              to="/contact"
+              className="rounded-full border border-white/40 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
+            >
               Contact Us
-            </button>
+            </Link>
           </div>
         </div>
       </section>

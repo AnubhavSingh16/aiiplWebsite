@@ -11,8 +11,8 @@ export default function Navbar() {
   const navItems = [
     { name: "Home", link: "/" },
     { name: "Products", link: "/products" },
-    // { name: "Cart", link: "/cart" },
-    { name: "Services", link: "/services" },
+    { name: "Build PC", link: "/build-pc" },
+    // { name: "Services", link: "/services" },
     { name: "About", link: "/about" },
     { name: "Contact", link: "/contact" },
   ];
@@ -63,10 +63,10 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            to="/products"
-            className="rounded-full border border-blue-100 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+            to="/build-pc"
+            className="rounded-full border border-emerald-100 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
           >
-            View Products
+            Build Your PC
           </Link>
           <Link
             to="/cart"
@@ -112,11 +112,11 @@ export default function Navbar() {
               </NavLink>
             ))}
             <Link
-              to="/products"
+              to="/build-pc"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-full border border-blue-100 px-4 py-2 text-center text-sm font-medium text-slate-700"
+              className="rounded-full border border-emerald-100 px-4 py-2 text-center text-sm font-medium text-slate-700"
             >
-              View Products
+              Build Your PC
             </Link>
             <Link
               to="/cart"
