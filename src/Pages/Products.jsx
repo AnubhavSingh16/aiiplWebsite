@@ -112,15 +112,33 @@ export default function Products() {
             </div>
 
             <Link
-              to="/cart"
-              className="rounded-[24px] border border-blue-100 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition hover:border-blue-200"
-            >
-              <div className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-                Cart
-              </div>
-              <div className="mt-3 text-3xl font-semibold text-slate-950">{totalItems}</div>
-              <div className="mt-1 text-sm text-slate-500">Items added so far</div>
-            </Link>
+  to="/cart"
+  className="group flex items-center justify-between rounded-3xl bg-gradient-to-bl from-slate-800 to-blue-400 px-7 py-6 shadow-lg transition hover:bg-slate-800"
+>
+  {/* Left */}
+  <div className="flex items-center gap-5">
+    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white shadow-inner">
+      <ShoppingCart className="h-7 w-7" />
+    </div>
+
+    <div className="flex flex-col">
+      <span className="text-sm uppercase tracking-wide text-slate-200">
+        Cart
+      </span>
+      <span className="text-base font-medium text-white">
+        Items added
+      </span>
+    </div>
+  </div>
+
+  {/* Right */}
+  <div className="flex items-center gap-3 text-white">
+    <span className="text-3xl font-semibold">
+      {totalItems}
+    </span>
+    <ArrowRight className="h-5 w-5 opacity-70 transition group-hover:translate-x-1" />
+  </div>
+</Link>
           </div>
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
@@ -270,81 +288,158 @@ export default function Products() {
                   const cartItem = cartItems.find((item) => item.id === product.id);
 
                   return (
+                    // <article
+                    //   key={product.id}
+                    //   className="group overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-[0_14px_36px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_20px_44px_rgba(37,99,235,0.12)]"
+                    // >
+                    //   <div className="relative overflow-hidden bg-slate-100">
+                    //     <span className="absolute left-4 top-4 z-10 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-blue-700 shadow-sm">
+                    //       {product.badge}
+                    //     </span>
+                    //     <img
+                    //       src={product.image}
+                    //       alt={product.name}
+                    //       className="h-36 w-full object-cover transition duration-500 group-hover:scale-105"
+                    //     />
+                    //   </div>
+
+                    //   <div className="p-3.5">
+                    //     <div className="flex items-start justify-between gap-4">
+                    //       <div>
+                    //         <div className="text-xs font-medium text-slate-500">
+                    //           {product.category} - {product.type}
+                    //         </div>
+                    //         <h3 className="mt-1 text-base font-semibold leading-5 text-slate-950">
+                    //           {product.name}
+                    //         </h3>
+                    //       </div>
+                    //       <div className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">
+                    //         <Star className="h-3.5 w-3.5 fill-current" />
+                    //         {product.rating}
+                    //       </div>
+                    //     </div>
+
+                    //     <p className="mt-2 text-[12px] leading-[1.1rem] text-slate-600">
+                    //       {product.description}
+                    //     </p>
+
+                    //     <div className="mt-3 flex items-center justify-between gap-3">
+                    //       <div>
+                    //         <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                    //           Starting from
+                    //         </div>
+                    //         <div className="mt-0.5 text-lg font-semibold leading-5 text-slate-950">
+                    //           {product.priceLabel}
+                    //         </div>
+                    //       </div>
+
+                    //       <div
+                    //         className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                    //           product.inStock
+                    //             ? "bg-emerald-50 text-emerald-700"
+                    //             : "bg-slate-100 text-slate-500"
+                    //         }`}
+                    //       >
+                    //         {product.inStock ? "Available" : "On request"}
+                    //       </div>
+                    //     </div>
+
+                    //     <div className="mt-3 flex items-center gap-2">
+                    //       <Link
+                    //         to={`/products/${product.id}`}
+                    //         className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[11px] font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+                    //       >
+                    //         View Product
+                    //         <ArrowRight className="h-3.5 w-3.5" />
+                    //       </Link>
+                    //       <button
+                    //         type="button"
+                    //         onClick={() => addToCart(product)}
+                    //         className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-3.5 py-2 text-[11px] font-semibold text-white transition hover:bg-blue-700"
+                    //       >
+                    //         <ShoppingCart className="h-3.5 w-3.5" />
+                    //         {cartItem ? `Add More (${cartItem.quantity})` : "Add to Cart"}
+                    //       </button>
+                    //     </div>
+                    //   </div>
+                    // </article>
                     <article
-                      key={product.id}
-                      className="group overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-[0_14px_36px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_20px_44px_rgba(37,99,235,0.12)]"
-                    >
-                      <div className="relative overflow-hidden bg-slate-100">
-                        <span className="absolute left-4 top-4 z-10 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-blue-700 shadow-sm">
-                          {product.badge}
-                        </span>
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="h-36 w-full object-cover transition duration-500 group-hover:scale-105"
-                        />
-                      </div>
+  key={product.id}
+  className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-blue-200 hover:shadow-md"
+>
+  {/* Image */}
+  <div className="relative overflow-hidden bg-slate-50">
+    <span className="absolute left-3 top-3 z-10 rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-blue-600">
+      {product.badge}
+    </span>
 
-                      <div className="p-3.5">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <div className="text-xs font-medium text-slate-500">
-                              {product.category} - {product.type}
-                            </div>
-                            <h3 className="mt-1 text-base font-semibold leading-5 text-slate-950">
-                              {product.name}
-                            </h3>
-                          </div>
-                          <div className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-600">
-                            <Star className="h-3.5 w-3.5 fill-current" />
-                            {product.rating}
-                          </div>
-                        </div>
+    <img
+      src={product.image}
+      alt={product.name}
+      className="h-36 w-full object-cover transition duration-300 group-hover:scale-105"
+    />
+  </div>
 
-                        <p className="mt-2 text-[12px] leading-[1.1rem] text-slate-600">
-                          {product.description}
-                        </p>
+  {/* Content */}
+  <div className="p-4">
+    <div className="flex items-start justify-between gap-3">
+      <div>
+        <p className="text-[11px] text-slate-500">
+          {product.category} • {product.type}
+        </p>
 
-                        <div className="mt-3 flex items-center justify-between gap-3">
-                          <div>
-                            <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-                              Starting from
-                            </div>
-                            <div className="mt-0.5 text-lg font-semibold leading-5 text-slate-950">
-                              {product.priceLabel}
-                            </div>
-                          </div>
+        <h3 className="mt-1 text-sm font-semibold text-slate-900 leading-5">
+          {product.name}
+        </h3>
+      </div>
 
-                          <div
-                            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                              product.inStock
-                                ? "bg-emerald-50 text-emerald-700"
-                                : "bg-slate-100 text-slate-500"
-                            }`}
-                          >
-                            {product.inStock ? "Available" : "On request"}
-                          </div>
-                        </div>
+      <div className="flex items-center gap-1 text-xs text-amber-600">
+        <Star className="h-3.5 w-3.5 fill-current" />
+        {product.rating}
+      </div>
+    </div>
 
-                        <div className="mt-3 flex items-center gap-2">
-                          <Link
-                            to={`/products/${product.id}`}
-                            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[11px] font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
-                          >
-                            View Product
-                            <ArrowRight className="h-3.5 w-3.5" />
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => addToCart(product)}
-                            className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-3.5 py-2 text-[11px] font-semibold text-white transition hover:bg-blue-700"
-                          >
-                            <ShoppingCart className="h-3.5 w-3.5" />
-                            {cartItem ? `Add More (${cartItem.quantity})` : "Add to Cart"}
-                          </button>
-                        </div>
-                      </div>
-                    </article>
+    <p className="mt-2 text-xs text-slate-600 line-clamp-2">
+      {product.description}
+    </p>
+
+    {/* Price + Stock */}
+    <div className="mt-3 flex items-center justify-between">
+      <div>
+        <p className="text-[10px] text-slate-400">Starting from</p>
+        <p className="text-base font-semibold text-slate-900">
+          {product.priceLabel}
+        </p>
+      </div>
+
+      <span
+        className={`text-[10px] font-medium ${
+          product.inStock ? "text-green-600" : "text-slate-400"
+        }`}
+      >
+        {product.inStock ? "In stock" : "Out of stock"}
+      </span>
+    </div>
+
+    {/* Actions */}
+    <div className="mt-4 flex gap-2">
+      <Link
+        to={`/products/${product.id}`}
+        className="flex-1 rounded-full border border-slate-200 py-2 text-center text-[11px] font-medium text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+      >
+        View
+      </Link>
+
+     <button
+  onClick={() => addToCart(product)}
+  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 py-2 text-[11px] font-medium text-white transition hover:bg-blue-700 active:scale-95"
+>
+  <ShoppingCart className="h-3.5 w-3.5" />
+  {cartItem ? `Added (${cartItem.quantity})` : "Add"}
+</button>
+    </div>
+  </div>
+</article>
                   );
                 })}
               </div>

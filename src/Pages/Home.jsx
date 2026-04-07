@@ -275,44 +275,52 @@ export default function Home() {
       />
 
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-              Why this design works
-            </p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-              A fresh homepage built around clarity and confidence.
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
-              The new layout uses light surfaces, blue accents, improved spacing,
-              and more polished text so the homepage feels professional and easy to trust.
-            </p>
-          </div>
+  <div className="mx-auto max-w-7xl">
+    <div className="max-w-2xl">
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+        Why this design works
+      </p>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {highlights.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.title}
-                  className="rounded-[28px] border border-blue-100 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.12)]"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mt-6 text-xl font-semibold text-slate-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
-                </div>
-              );
-            })}
+      <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
+        A fresh homepage built around clarity and confidence.
+      </h2>
+
+      <p className="mt-4 text-lg leading-8 text-slate-600">
+        The new layout uses light surfaces, blue accents, improved spacing,
+        and more polished text so the homepage feels professional and easy to trust.
+      </p>
+    </div>
+
+    <div className="mt-12 grid gap-6 md:grid-cols-3">
+      {highlights.map((item) => {
+        const Icon = item.icon;
+        return (
+          <div
+            key={item.title}
+            className="rounded-[28px] p-8 bg-gradient-to-br from-blue-50 via-white to-blue-100 border border-blue-200 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
+          >
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
+              <Icon className="h-6 w-6" />
+            </div>
+
+            <h3 className="mt-6 text-xl font-semibold text-slate-900">
+              {item.title}
+            </h3>
+
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              {item.description}
+            </p>
           </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
       <SolutionsSection />
 
       <section className="px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-6xl rounded-[36px] border border-blue-100 bg-gradient-to-l from-blue-600 to-sky-300 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
+        <div className="mx-auto max-w-6xl rounded-[36px] border border-blue-100 bg-gradient-to-l from-sky-600 to-sky-400 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
           <h2 className="text-4xl font-semibold tracking-tight">
             Talk to an expert.
           </h2>
@@ -324,13 +332,13 @@ export default function Home() {
               to="/contact"
               className="rounded-full bg-white px-6 py-3.5 font-semibold text-blue-700 transition hover:bg-slate-100"
             >
-              Request a Demo
+              Contact Us
             </Link>
             <Link
-              to="/contact"
+              to="/about"
               className="rounded-full border border-white/40 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
             >
-              Contact Us
+              About Us
             </Link>
           </div>
         </div>
