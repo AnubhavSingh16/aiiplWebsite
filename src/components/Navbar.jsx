@@ -64,25 +64,25 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <Link
             to="/build-pc"
-            className="rounded-full border border-emerald-100 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
+            className="rounded-full border border-blue-300  bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
           >
             Build Your PC
           </Link>
           <Link
             to="/cart"
-            className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+            className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-gradient-to-r from-blue-600 to-sky-400 px-4 py-2.5 text-sm font-medium text-white transition hover:border-blue-200 hover:text-blue-100"
           >
             <ShoppingCart className="h-4 w-4" />
             Cart
             {totalItems > 0 && (
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1.5 text-[11px] font-semibold text-white">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-[11px] font-semibold text-blue-600">
                 {totalItems}
               </span>
             )}
           </Link>
-          <button className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
+          {/* <button className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
             Get Started
-          </button>
+          </button> */}
         </div>
 
         <button
