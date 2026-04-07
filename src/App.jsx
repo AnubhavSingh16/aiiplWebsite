@@ -9,6 +9,7 @@ import ProductDetails from "./Pages/ProductDetails";
 import Products from "./Pages/Products";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import Profile from "./Pages/Profile";
 import { CartProvider } from "./context/CartContext";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <Footer />
         </>

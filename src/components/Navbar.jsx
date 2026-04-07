@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, Server, ShoppingCart, X } from "lucide-react";
+import { Menu, Server, ShoppingCart, X, User } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function Navbar() {
@@ -80,6 +80,12 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+          <Link
+  to="/profile"
+  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+>
+  <User className="h-5 w-5" />
+</Link>
           {/* <button className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
             Get Started
           </button> */}
