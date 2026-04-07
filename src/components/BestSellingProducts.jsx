@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ChevronRight, Star } from "lucide-react";
 
 export default function BestSellingProducts({
@@ -22,10 +23,13 @@ export default function BestSellingProducts({
             <p className="mt-4 text-lg leading-8 text-slate-600">{description}</p>
           </div>
 
-          <button className="inline-flex items-center gap-2 self-start rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-blue-200 hover:text-blue-700 lg:self-auto">
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-2 self-start rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-blue-200 hover:text-blue-700 lg:self-auto"
+          >
             {ctaLabel}
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -73,9 +77,12 @@ export default function BestSellingProducts({
                     </div>
                   </div>
 
-                  <button className="rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+                  <Link
+                    to={`/products/${product.id}`}
+                    className="rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  >
                     View Product
-                  </button>
+                  </Link>
                 </div>
               </div>
             </article>

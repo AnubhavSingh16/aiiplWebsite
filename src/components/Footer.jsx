@@ -2,7 +2,7 @@ import { Server, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-20 bg-blue-100 border-t border-teal-300/20 backdrop-blur-md">
+    <footer className="w-full bg-blue-100 border-t border-teal-300/20 backdrop-blur-md">
       
       {/* Inner Container */}
       <div className="mx-auto max-w-[1200px] px-6 py-12">
