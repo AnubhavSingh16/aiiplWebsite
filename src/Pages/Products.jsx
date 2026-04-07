@@ -37,7 +37,10 @@ export default function Products() {
   const [sortBy, setSortBy] = useState("featured");
   const { addToCart, cartItems, totalItems } = useCart();
 
-  const categories = ["All", ...new Set(productCatalog.map((product) => product.category))];
+  const categories = [
+    "All",
+    ...new Set(productCatalog.map((product) => product.category)),
+  ];
 
   const filteredProducts = productCatalog
     .filter((product) => {
@@ -58,7 +61,9 @@ export default function Products() {
       const matchesPrice =
         selectedPriceRange === "all" ||
         (selectedPriceRange === "under-50" && product.price < 50) ||
-        (selectedPriceRange === "50-100" && product.price >= 50 && product.price <= 100) ||
+        (selectedPriceRange === "50-100" &&
+          product.price >= 50 &&
+          product.price <= 100) ||
         (selectedPriceRange === "over-100" && product.price > 100);
 
       return (
@@ -106,39 +111,38 @@ export default function Products() {
                 Explore every product in one modern, filter-first catalog.
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-7 text-slate-600">
-                Built like a polished e-commerce page with search, category filters,
-                pricing controls, and a clean product grid for your full offerings.
+                Built like a polished e-commerce page with search, category
+                filters, pricing controls, and a clean product grid for your
+                full offerings.
               </p>
             </div>
 
             <Link
-  to="/cart"
-  className="group flex items-center justify-between rounded-3xl bg-gradient-to-bl from-slate-800 to-blue-400 px-7 py-6 shadow-lg transition hover:bg-slate-800"
->
-  {/* Left */}
-  <div className="flex items-center gap-5">
-    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white shadow-inner">
-      <ShoppingCart className="h-7 w-7" />
-    </div>
+              to="/cart"
+              className="group flex items-center justify-between rounded-3xl bg-gradient-to-bl from-slate-800 to-blue-400 px-7 py-6 shadow-lg transition hover:bg-slate-800"
+            >
+              {/* Left */}
+              <div className="flex items-center gap-5">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white shadow-inner">
+                  <ShoppingCart className="h-7 w-7" />
+                </div>
 
-    <div className="flex flex-col">
-      <span className="text-sm uppercase tracking-wide text-slate-200">
-        Cart
-      </span>
-      <span className="text-base font-medium text-white">
-        Items added
-      </span>
-    </div>
-  </div>
+                <div className="flex flex-col">
+                  <span className="text-sm uppercase tracking-wide text-slate-200">
+                    Cart
+                  </span>
+                  <span className="text-base font-medium text-white">
+                    Items added
+                  </span>
+                </div>
+              </div>
 
-  {/* Right */}
-  <div className="flex items-center gap-3 text-white">
-    <span className="text-3xl font-semibold">
-      {totalItems}
-    </span>
-    <ArrowRight className="h-5 w-5 opacity-70 transition group-hover:translate-x-1" />
-  </div>
-</Link>
+              {/* Right */}
+              <div className="flex items-center gap-3 text-white">
+                <span className="text-3xl font-semibold">{totalItems}</span>
+                <ArrowRight className="h-5 w-5 opacity-70 transition group-hover:translate-x-1" />
+              </div>
+            </Link>
           </div>
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
@@ -165,7 +169,9 @@ export default function Products() {
               </div>
 
               <div className="mt-6">
-                <label className="text-sm font-semibold text-slate-900">Search products</label>
+                <label className="text-sm font-semibold text-slate-900">
+                  Search products
+                </label>
                 <div className="mt-3 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-blue-300 focus-within:bg-white">
                   <Search className="h-4 w-4 text-slate-400" />
                   <input
@@ -179,7 +185,9 @@ export default function Products() {
               </div>
 
               <div className="mt-8">
-                <div className="text-sm font-semibold text-slate-900">Category</div>
+                <div className="text-sm font-semibold text-slate-900">
+                  Category
+                </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {categories.map((category) => {
                     const active = selectedCategory === category;
@@ -203,7 +211,9 @@ export default function Products() {
               </div>
 
               <div className="mt-8">
-                <div className="text-sm font-semibold text-slate-900">Price range</div>
+                <div className="text-sm font-semibold text-slate-900">
+                  Price range
+                </div>
                 <div className="mt-3 space-y-2">
                   {priceRanges.map((range) => {
                     const active = selectedPriceRange === range.value;
@@ -260,7 +270,8 @@ export default function Products() {
               <div className="flex flex-col gap-4 rounded-[32px] border border-blue-100 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,0.06)] md:flex-row md:items-center md:justify-between">
                 <div>
                   <div className="text-sm font-medium text-slate-500">
-                    Showing {filteredProducts.length} of {productCatalog.length} products
+                    Showing {filteredProducts.length} of {productCatalog.length}{" "}
+                    products
                   </div>
                   <div className="mt-1 text-lg font-semibold text-slate-900">
                     Catalog built for easy discovery
@@ -285,7 +296,9 @@ export default function Products() {
 
               <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                 {filteredProducts.map((product) => {
-                  const cartItem = cartItems.find((item) => item.id === product.id);
+                  const cartItem = cartItems.find(
+                    (item) => item.id === product.id,
+                  );
 
                   return (
                     // <article
@@ -364,92 +377,98 @@ export default function Products() {
                     //   </div>
                     // </article>
                     <article
-  key={product.id}
-  className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-blue-200 hover:shadow-md"
->
-  {/* Image */}
-  <div className="relative overflow-hidden bg-slate-50">
-    <span className="absolute left-3 top-3 z-10 rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-blue-600">
-      {product.badge}
-    </span>
+                      key={product.id}
+                      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-blue-200 hover:shadow-md"
+                    >
+                      {/* Image */}
+                      <div className="relative overflow-hidden bg-slate-50">
+                        <span className="absolute left-3 top-3 z-10 rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-blue-600">
+                          {product.badge}
+                        </span>
 
-    <img
-      src={product.image}
-      alt={product.name}
-      className="h-36 w-full object-cover transition duration-300 group-hover:scale-105"
-    />
-  </div>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="h-36 w-full object-cover transition duration-300 group-hover:scale-105"
+                        />
+                      </div>
 
-  {/* Content */}
-  <div className="p-4">
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <p className="text-[11px] text-slate-500">
-          {product.category} • {product.type}
-        </p>
+                      {/* Content */}
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-[11px] text-slate-500">
+                              {product.category} • {product.type}
+                            </p>
 
-        <h3 className="mt-1 text-sm font-semibold text-slate-900 leading-5">
-          {product.name}
-        </h3>
-      </div>
+                            <h3 className="mt-1 text-sm font-semibold text-slate-900 leading-5">
+                              {product.name}
+                            </h3>
+                          </div>
 
-      <div className="flex items-center gap-1 text-xs text-amber-600">
-        <Star className="h-3.5 w-3.5 fill-current" />
-        {product.rating}
-      </div>
-    </div>
+                          <div className="flex items-center gap-1 text-xs text-amber-600">
+                            <Star className="h-3.5 w-3.5 fill-current" />
+                            {product.rating}
+                          </div>
+                        </div>
 
-    <p className="mt-2 text-xs text-slate-600 line-clamp-2">
-      {product.description}
-    </p>
+                        <p className="mt-2 text-xs text-slate-600 line-clamp-2">
+                          {product.description}
+                        </p>
 
-    {/* Price + Stock */}
-    <div className="mt-3 flex items-center justify-between">
-      <div>
-        <p className="text-[10px] text-slate-400">Starting from</p>
-        <p className="text-base font-semibold text-slate-900">
-          {product.priceLabel}
-        </p>
-      </div>
+                        {/* Price + Stock */}
+                        <div className="mt-3 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] text-slate-400">
+                              Starting from
+                            </p>
+                            <p className="text-base font-semibold text-slate-900">
+                              {product.priceLabel}
+                            </p>
+                          </div>
 
-      <span
-        className={`text-[10px] font-medium ${
-          product.inStock ? "text-green-600" : "text-slate-400"
-        }`}
-      >
-        {product.inStock ? "In stock" : "Out of stock"}
-      </span>
-    </div>
+                          <span
+                            className={`text-[10px] font-medium ${
+                              product.inStock
+                                ? "text-green-600"
+                                : "text-slate-400"
+                            }`}
+                          >
+                            {product.inStock ? "In stock" : "Out of stock"}
+                          </span>
+                        </div>
 
-    {/* Actions */}
-    <div className="mt-4 flex gap-2">
-      <Link
-        to={`/products/${product.id}`}
-        className="flex-1 rounded-full border border-slate-200 py-2 text-center text-[11px] font-medium text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
-      >
-        View
-      </Link>
+                        {/* Actions */}
+                        <div className="mt-4 flex gap-2">
+                          <Link
+                            to={`/products/${product.id}`}
+                            className="flex-1 rounded-full border border-slate-200 py-2 text-center text-[11px] font-medium text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+                          >
+                            View
+                          </Link>
 
-     <button
-  onClick={() => addToCart(product)}
-  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 py-2 text-[11px] font-medium text-white transition hover:bg-blue-700 active:scale-95"
->
-  <ShoppingCart className="h-3.5 w-3.5" />
-  {cartItem ? `Added (${cartItem.quantity})` : "Add"}
-</button>
-    </div>
-  </div>
-</article>
+                          <button
+                            onClick={() => addToCart(product)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 py-2 text-[11px] font-medium text-white transition hover:bg-blue-700 active:scale-95"
+                          >
+                            <ShoppingCart className="h-3.5 w-3.5" />
+                            {cartItem ? `Added (${cartItem.quantity})` : "Add"}
+                          </button>
+                        </div>
+                      </div>
+                    </article>
                   );
                 })}
               </div>
 
               {filteredProducts.length === 0 && (
                 <div className="mt-6 rounded-[32px] border border-dashed border-blue-200 bg-white px-6 py-14 text-center">
-                  <div className="text-2xl font-semibold text-slate-900">No products found</div>
+                  <div className="text-2xl font-semibold text-slate-900">
+                    No products found
+                  </div>
                   <p className="mx-auto mt-3 max-w-xl text-slate-600">
-                    Try clearing a few filters or searching with a broader keyword to
-                    explore more items from the catalog.
+                    Try clearing a few filters or searching with a broader
+                    keyword to explore more items from the catalog.
                   </p>
                 </div>
               )}
@@ -463,11 +482,12 @@ export default function Products() {
                   Need a custom stack?
                 </div>
                 <h2 className="mt-4 text-4xl font-semibold tracking-tight">
-                  Mix hosting, servers, and storage into a package that fits your business.
+                  Mix hosting, servers, and storage into a package that fits
+                  your business.
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-                  This page gives you a stronger product catalog experience without
-                  breaking the clean white and blue site direction.
+                  This page gives you a stronger product catalog experience
+                  without breaking the clean white and blue site direction.
                 </p>
               </div>
 
