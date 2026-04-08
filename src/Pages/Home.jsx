@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Activity,
   ChevronRight,
@@ -15,7 +15,43 @@ import Navbar from "../components/Navbar";
 import SolutionsSection from "../components/Solutions";
 import { productCatalog } from "../data/products";
 
+const heroGallery = [
+  {
+    title: "Enterprise racks",
+    image:
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Cloud operations",
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Custom PC assembly",
+    image:
+      "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Modern workstations",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Network infrastructure",
+    image:
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Support desk",
+    image:
+      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80",
+  },
+];
+
 export default function Home() {
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [heroTransitionEnabled, setHeroTransitionEnabled] = useState(true);
+
   const highlights = [
     {
       icon: Server,
@@ -37,17 +73,45 @@ export default function Home() {
     },
   ];
 
-  const stats = [
-    { value: "250+", label: "Projects delivered", tone: "from-cyan-500 to-blue-500" },
-    { value: "24/7", label: "Technical support", tone: "from-emerald-500 to-teal-500" },
-    { value: "99.9%", label: "Service reliability", tone: "from-fuchsia-500 to-pink-500" },
-  ];
-
   const bestSellingProducts = productCatalog.slice(0, 4).map((product) => ({
     ...product,
     rating: product.rating.toFixed(1),
     price: product.priceLabel,
   }));
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setHeroTransitionEnabled(true);
+      setHeroImageIndex((current) => current + 1);
+    }, 2400);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (heroImageIndex !== heroGallery.length) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHeroTransitionEnabled(false);
+      setHeroImageIndex(0);
+    }, 700);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [heroImageIndex]);
+
+  useEffect(() => {
+    if (heroTransitionEnabled) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHeroTransitionEnabled(true);
+    }, 60);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [heroTransitionEnabled]);
 
   const promoBanners = [
     {
@@ -107,19 +171,50 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="mt-12 grid gap-4 sm:grid-cols-3">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[24px] border border-white bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] backdrop-blur"
-                >
-                  <div className={`inline-flex rounded-full bg-gradient-to-r ${stat.tone} px-3 py-1 text-xs font-semibold text-white`}>
-                    Live
-                  </div>
-                  <div className="mt-4 text-3xl font-semibold text-slate-950">{stat.value}</div>
-                  <div className="mt-1 text-sm text-slate-500">{stat.label}</div>
+            <div className="mt-12 rounded-[24px] border border-blue-100/90 bg-[linear-gradient(180deg,_rgba(255,255,255,0.92)_0%,_rgba(241,247,255,0.88)_100%)] p-3.5 shadow-[0_20px_60px_rgba(49,120,246,0.5)] backdrop-blur-md">
+              <div className="mb-2 flex items-center justify-between px-1">
+                <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Featured Categories
                 </div>
-              ))}
+                <div className="flex items-center gap-1.5">
+                  {heroGallery.map((_, index) => (
+                    <span
+                      key={index}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        index === heroImageIndex % heroGallery.length
+                          ? "w-4 bg-blue-600"
+                          : "w-1.5 bg-slate-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid h-[168px] gap-3 grid-cols-[1.15fr_0.85fr_0.85fr]">
+                <div className="col-span-3 overflow-hidden rounded-[24px]">
+                  <div
+                    className={`flex gap-3 ${heroTransitionEnabled ? "transition-transform duration-700 ease-out" : ""}`}
+                    style={{ transform: `translateX(calc(-${heroImageIndex} * (33.333% + 0.75rem)))` }}
+                  >
+                    {[...heroGallery, ...heroGallery.slice(0, 3)].map((item, index) => (
+                      <div
+                        key={`${item.title}-${index}`}
+                        className="group relative h-[168px] overflow-hidden rounded-[18px] bg-slate-100"
+                        style={{ flex: "0 0 calc((100% - 1.5rem) / 3)" }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/58 via-slate-950/10 to-transparent px-3 py-2.5">
+                          <div className="text-[11px] font-medium text-white/95">{item.title}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -297,7 +392,7 @@ export default function Home() {
         return (
           <div
             key={item.title}
-            className="rounded-[28px] p-8 bg-gradient-to-br from-blue-50 via-white to-blue-100 border border-blue-200 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
+            className="rounded-[28px] p-8 bg-gradient-to-br from-blue-100 via-white to-blue-200 border border-blue-300 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
               <Icon className="h-6 w-6" />
@@ -320,7 +415,7 @@ export default function Home() {
       <SolutionsSection />
 
       <section className="px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-6xl rounded-[36px] border border-blue-100 bg-gradient-to-l from-sky-600 to-sky-400 p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
+        <div className="mx-auto max-w-7xl rounded-[28px] border border-blue-100 bg-[radial-gradient(circle_at_top_left,_rgba(25,185,129,0.4),_transparent_28%),linear-gradient(155deg,_#06121f_0%,_#0f172a_48%,_#0b2745_100%)]  p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
           <h2 className="text-4xl font-semibold tracking-tight">
             Talk to an expert.
           </h2>

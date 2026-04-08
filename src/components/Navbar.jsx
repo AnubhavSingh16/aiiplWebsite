@@ -12,7 +12,6 @@ export default function Navbar() {
     { name: "Home", link: "/" },
     { name: "Products", link: "/products" },
     { name: "Build PC", link: "/build-pc" },
-    // { name: "Services", link: "/services" },
     { name: "About", link: "/about" },
     { name: "Contact", link: "/contact" },
   ];
@@ -64,7 +63,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <Link
             to="/build-pc"
-            className="rounded-full border border-blue-300  bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
+            className="rounded-full border border-blue-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
           >
             Build Your PC
           </Link>
@@ -81,14 +80,11 @@ export default function Navbar() {
             )}
           </Link>
           <Link
-  to="/profile"
-  className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
->
-  <User className="h-5 w-5" />
-</Link>
-          {/* <button className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
-            Get Started
-          </button> */}
+            to="/profile"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-blue-200 hover:text-blue-700"
+          >
+            <User className="h-5 w-5" />
+          </Link>
         </div>
 
         <button
@@ -102,7 +98,7 @@ export default function Navbar() {
 
       {mobileMenuOpen && (
         <div className="border-t border-blue-100 bg-white px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-center gap-3 text-center">
             {navItems.map((item) => (
               <NavLink
                 key={item.name}
@@ -120,14 +116,14 @@ export default function Navbar() {
             <Link
               to="/build-pc"
               onClick={() => setMobileMenuOpen(false)}
-              className="rounded-full border border-emerald-100 px-4 py-2 text-center text-sm font-medium text-slate-700"
+              className="rounded-full border border-emerald-100 px-3.5 py-1.5 text-center text-xs font-medium text-slate-700"
             >
               Build Your PC
             </Link>
             <Link
               to="/cart"
               onClick={() => setMobileMenuOpen(false)}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 px-4 py-2 text-sm font-medium text-slate-700"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 px-3.5 py-1.5 text-xs font-medium text-slate-700"
             >
               <ShoppingCart className="h-4 w-4" />
               Cart
@@ -137,9 +133,14 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
-              Get Started
-            </button>
+            <Link
+              to="/profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-medium text-slate-700"
+            >
+              <User className="h-4 w-4" />
+              Profile
+            </Link>
           </div>
         </div>
       )}

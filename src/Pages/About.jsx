@@ -77,7 +77,7 @@ export default function About() {
                 <Sparkles className="h-4 w-4" />
                 About AIPL
               </div>
-              <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl">
+              <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
                 A technology company built around quality, service, and momentum.
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">

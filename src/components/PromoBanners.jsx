@@ -1,5 +1,4 @@
 import React from "react";
-import { ChevronRight } from "lucide-react";
 
 export default function PromoBanners({
   eyebrow = "Promotions",
@@ -26,44 +25,29 @@ export default function PromoBanners({
           {banners.map((banner) => (
             <article
               key={banner.id}
-              className={`group relative overflow-hidden rounded-[32px] border border-blue-100 p-8 text-white shadow-[0_20px_60px_rgba(37,99,235,0.14)] ${banner.themeClass}`}
+              className="group relative overflow-hidden rounded-[32px] border border-blue-100 bg-slate-950 text-white shadow-[0_20px_60px_rgba(37,99,235,0.14)]"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.28),_transparent_35%)]" />
-              <div
-                className={`relative grid gap-8 ${
-                  isSingleBanner
-                    ? "lg:grid-cols-[1.2fr_0.8fr] lg:items-center"
-                    : "md:grid-cols-[1fr_220px] md:items-center"
+              <img
+                src={banner.image}
+                alt={banner.title}
+                className={`w-full object-cover transition duration-700 group-hover:scale-105 ${
+                  isSingleBanner ? "h-72 lg:h-[360px]" : "h-64"
                 }`}
-              >
-                <div>
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(110deg,_rgba(2,6,23,0.78)_0%,_rgba(2,6,23,0.4)_42%,_rgba(2,6,23,0.12)_100%)]" />
+              <div className="absolute inset-0 flex items-end p-8">
+                <div className="max-w-xl">
                   {banner.label && (
-                    <div className="inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90">
+                    <div className="inline-flex rounded-full border border-white/20 bg-white/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm">
                       {banner.label}
                     </div>
                   )}
-                  <h3 className="mt-5 max-w-md text-3xl font-semibold leading-tight">
+                  <h3 className="mt-4 max-w-lg text-3xl font-semibold leading-tight text-white md:text-4xl">
                     {banner.title}
                   </h3>
-                  <p className="mt-4 max-w-lg text-sm leading-7 text-white/85">
+                  <p className="mt-3 max-w-md text-sm leading-7 text-white/82">
                     {banner.description}
                   </p>
-                  <button className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-700 transition group-hover:bg-blue-50">
-                    {banner.buttonLabel || "Explore now"}
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="relative">
-                  <div className="overflow-hidden rounded-[28px] border border-white/25 bg-white/15 backdrop-blur-sm">
-                    <img
-                      src={banner.image}
-                      alt={banner.title}
-                      className={`w-full object-cover transition duration-500 group-hover:scale-105 ${
-                        isSingleBanner ? "h-72 lg:h-80" : "h-56"
-                      }`}
-                    />
-                  </div>
                 </div>
               </div>
             </article>
