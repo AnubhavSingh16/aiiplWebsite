@@ -15,6 +15,9 @@ import {
   Zap,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { useCart } from "../context/CartContext";
+
+const formatPrice = (value) => `Rs. ${value}`;
 
 const buildCategories = [
   {
@@ -92,8 +95,10 @@ const buildCategories = [
 ];
 
 export default function BuildPc() {
+  const { addBuildToCart } = useCart();
   const [selectedParts, setSelectedParts] = useState({});
   const [openCategory, setOpenCategory] = useState(buildCategories[0].key);
+  const [buildSaved, setBuildSaved] = useState(false);
 
   const selectedEntries = useMemo(
     () =>
@@ -118,6 +123,34 @@ export default function BuildPc() {
       ...current,
       [categoryKey]: current[categoryKey] === optionId ? undefined : optionId,
     }));
+    setBuildSaved(false);
+  };
+
+  const handleSaveBuild = () => {
+    if (!selectedEntries.length) {
+      return;
+    }
+
+    addBuildToCart({
+      name: `Custom Build ${new Date().toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+      })}`,
+        items: selectedEntries.map((entry) => ({
+        id: `build-${entry.key}-${entry.selected.id}`,
+        name: entry.selected.name,
+        category: "Custom PC Build",
+        type: entry.label,
+        description: `${entry.label} selected for your saved custom PC build.`,
+        price: entry.selected.price,
+        priceLabel: `${formatPrice(entry.selected.price)}/mo`,
+        image:
+          "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=900&q=80",
+        buildCategory: entry.label,
+      })),
+    });
+
+    setBuildSaved(true);
   };
 
   return (
@@ -164,7 +197,7 @@ export default function BuildPc() {
               </div>
               <div className="mt-4 flex items-center justify-between text-sm text-slate-300">
                 <span>{selectedEntries.length} of {buildCategories.length} categories configured</span>
-                <span className="font-semibold text-white">${totalPrice}</span>
+                <span className="font-semibold text-white">{formatPrice(totalPrice)}</span>
               </div>
             </div>
           </div>
@@ -201,7 +234,7 @@ export default function BuildPc() {
                       <div className="flex items-center gap-3">
                         {selected && (
                           <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-                            ${selected.price}
+                            {formatPrice(selected.price)}
                           </span>
                         )}
                         <ChevronDown
@@ -237,7 +270,7 @@ export default function BuildPc() {
                                   {option.tag}
                                 </div>
                                 <div className="mt-4 text-lg font-semibold text-white">
-                                  ${option.price}
+                                  {formatPrice(option.price)}
                                 </div>
                               </button>
                             );
@@ -327,12 +360,18 @@ export default function BuildPc() {
               <div className="mt-6 rounded-[24px] border border-white/8 bg-white/6 p-5">
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm text-slate-300">Estimated build total</span>
-                  <span className="text-3xl font-semibold text-white">${totalPrice}</span>
+                  <span className="text-3xl font-semibold text-white">{formatPrice(totalPrice)}</span>
                 </div>
                 <div className="mt-2 text-sm text-slate-400">
-                  Every category updates the preview instantly and keeps the build cleaner.
+                  Save this build to keep all selected parts together during checkout.
                 </div>
               </div>
+
+              {buildSaved && (
+                <div className="mt-4 rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-300">
+                  Your custom build has been saved to the cart as one grouped setup.
+                </div>
+              )}
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
@@ -342,7 +381,12 @@ export default function BuildPc() {
                   Browse store
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <button className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                <button
+                  type="button"
+                  onClick={handleSaveBuild}
+                  disabled={!selectedEntries.length}
+                  className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                >
                   Save this build
                 </button>
               </div>

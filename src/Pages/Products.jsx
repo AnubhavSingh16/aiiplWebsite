@@ -16,9 +16,9 @@ import { productCatalog } from "../data/products";
 
 const priceRanges = [
   { label: "All prices", value: "all" },
-  { label: "Under $50", value: "under-50" },
-  { label: "$50 to $100", value: "50-100" },
-  { label: "Above $100", value: "over-100" },
+  { label: "Under Rs. 50", value: "under-50" },
+  { label: "Rs. 50 to Rs. 100", value: "50-100" },
+  { label: "Above Rs. 100", value: "over-100" },
 ];
 
 const sortOptions = [
