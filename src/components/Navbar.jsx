@@ -6,6 +6,7 @@ import { useCart } from "../context/CartContext";
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
   const { totalItems } = useCart();
 
   const navItems = [
@@ -17,8 +18,14 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const currentScrollY = window.scrollY;
+
+      setScrolled(currentScrollY > 10);
+      setShowNavbar(currentScrollY < 24 || currentScrollY < lastScrollY);
+      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -28,6 +35,8 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+      } ${
         scrolled
           ? "border-b border-blue-100 bg-white/85 shadow-[0_12px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl"
           : "bg-transparent"

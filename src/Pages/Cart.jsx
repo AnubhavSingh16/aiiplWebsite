@@ -426,7 +426,7 @@ export default function Cart() {
       </section>
 
       {showAddressPrompt && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-950/45 px-4">
+        <div className="fixed inset-0 z-40 flex items-start justify-center bg-slate-950/45 px-4 pt-28">
           <div className="w-full max-w-md rounded-[28px] bg-white p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -474,7 +474,7 @@ export default function Cart() {
       )}
 
       {showCheckoutModal && (
-        <div className="fixed inset-0 z-40 overflow-y-auto bg-slate-950/45 px-4 py-8">
+        <div className="fixed inset-0 z-40 overflow-y-auto bg-slate-950/45 px-4 pb-8 pt-28">
           <div className="mx-auto w-full max-w-2xl rounded-[28px] bg-white p-6 shadow-2xl md:p-8">
             <div className="flex items-start justify-between gap-4">
               <div>

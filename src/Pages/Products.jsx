@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Minus,
+  Plus,
   ShoppingCart,
   Check,
   ChevronDown,
@@ -35,7 +37,7 @@ export default function Products() {
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
-  const { addToCart, cartItems, totalItems } = useCart();
+  const { addToCart, cartItems, decreaseQuantity, totalItems } = useCart();
 
   const categories = [
     "All",
@@ -447,13 +449,39 @@ export default function Products() {
                             View
                           </Link>
 
-                          <button
-                            onClick={() => addToCart(product)}
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 py-2 text-[11px] font-medium text-white transition hover:bg-blue-700 active:scale-95"
-                          >
-                            <ShoppingCart className="h-3.5 w-3.5" />
-                            {cartItem ? `Added (${cartItem.quantity})` : "Add"}
-                          </button>
+                          {cartItem ? (
+                            <div className="flex flex-1 items-center justify-between rounded-full bg-blue-600 px-2 py-1.5 text-white">
+                              <button
+                                type="button"
+                                onClick={() => decreaseQuantity(cartItem.cartItemId)}
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full  transition hover:bg-white/20"
+                              >
+                                <Minus className="h-3.5 w-3.5" />
+                              </button>
+
+                              <div className="inline-flex items-center gap-1.5 text-[11px] font-medium">
+                                <ShoppingCart className="h-3.5 w-3.5" />
+                                {cartItem.quantity}
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => addToCart(product)}
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full  transition hover:bg-white/20"
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => addToCart(product)}
+                              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 py-2 text-[11px] font-medium text-white transition hover:bg-blue-700 active:scale-95"
+                            >
+                              <ShoppingCart className="h-3.5 w-3.5" />
+                              Add
+                            </button>
+                          )}
                         </div>
                       </div>
                     </article>
