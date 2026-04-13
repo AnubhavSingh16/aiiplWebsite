@@ -147,7 +147,7 @@ export default function Cart() {
               </h1>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
                 Make sure everything looks good before proceeding for enquiry.
-                Prices and availability will be confirmed by us after you place the inquiry.
+                Prices and availability will be confirmed by us after you place the enquiry.
               </p>
             </div>
 
@@ -155,8 +155,9 @@ export default function Cart() {
               <button
                 type="button"
                 onClick={clearCart}
-                className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-600"
+                className="rounded-full border border-red-400 bg-white px-5 py-2.5 text-sm font-semibold text-red-500 transition hover:border-red-700 hover:text-red-600"
               >
+                {/* <Trash2 className="h-4 w-4" /> */}
                 Clear cart
               </button>
             )}
@@ -341,7 +342,7 @@ export default function Cart() {
                 <div className="mt-6 rounded-2xl bg-slate-50 p-4">
                   <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
                     <User className="h-4 w-4 text-blue-700" />
-                    Account details for inquiry
+                    Account details for enquiry
                   </div>
                   {canUseSavedAddress ? (
                     <div className="mt-3 space-y-1 text-sm text-slate-600">
@@ -369,7 +370,7 @@ export default function Cart() {
                   onClick={handleProceedToCheckout}
                   className="mt-6 w-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
-                  Request Inquiry
+                  Request enquiry
                 </button>
                 <Link
                   to="/products"
