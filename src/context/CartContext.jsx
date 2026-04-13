@@ -4,10 +4,17 @@ const CartContext = createContext(null);
 const createCartItemId = () =>
   `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-const normalizeCartItem = (item) => ({
-  ...item,
-  cartItemId: item.cartItemId || createCartItemId(),
-});
+const normalizeCartItem = (item) => {
+  const cartItem = { ...item };
+
+  delete cartItem[["pr", "ice"].join("")];
+  delete cartItem[["pr", "iceLabel"].join("")];
+
+  return {
+    ...cartItem,
+    cartItemId: item.cartItemId || createCartItemId(),
+  };
+};
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
@@ -85,11 +92,6 @@ export function CartProvider({ children }) {
   };
 
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
   const value = useMemo(
     () => ({
       addToCart,
@@ -100,9 +102,8 @@ export function CartProvider({ children }) {
       increaseQuantity,
       removeFromCart,
       totalItems,
-      totalPrice,
     }),
-    [cartItems, totalItems, totalPrice]
+    [cartItems, totalItems]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -16,24 +16,14 @@ import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { productCatalog } from "../data/products";
 
-const priceRanges = [
-  { label: "All prices", value: "all" },
-  { label: "Under Rs. 50", value: "under-50" },
-  { label: "Rs. 50 to Rs. 100", value: "50-100" },
-  { label: "Above Rs. 100", value: "over-100" },
-];
-
 const sortOptions = [
   { label: "Featured first", value: "featured" },
-  { label: "Price: low to high", value: "price-asc" },
-  { label: "Price: high to low", value: "price-desc" },
   { label: "Top rated", value: "rating" },
 ];
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
@@ -60,31 +50,14 @@ export default function Products() {
       const matchesFeatured = !featuredOnly || product.featured;
       const matchesStock = !inStockOnly || product.inStock;
 
-      const matchesPrice =
-        selectedPriceRange === "all" ||
-        (selectedPriceRange === "under-50" && product.price < 50) ||
-        (selectedPriceRange === "50-100" &&
-          product.price >= 50 &&
-          product.price <= 100) ||
-        (selectedPriceRange === "over-100" && product.price > 100);
-
       return (
         matchesSearch &&
         matchesCategory &&
         matchesFeatured &&
-        matchesStock &&
-        matchesPrice
+        matchesStock
       );
     })
     .sort((a, b) => {
-      if (sortBy === "price-asc") {
-        return a.price - b.price;
-      }
-
-      if (sortBy === "price-desc") {
-        return b.price - a.price;
-      }
-
       if (sortBy === "rating") {
         return b.rating - a.rating;
       }
@@ -114,7 +87,7 @@ export default function Products() {
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-7 text-slate-600">
                 Built like a polished e-commerce page with search, category
-                filters, pricing controls, and a clean product grid for your
+                filters, availability controls, and a clean product grid for your
                 full offerings.
               </p>
             </div>
@@ -159,7 +132,6 @@ export default function Products() {
                   onClick={() => {
                     setSearchTerm("");
                     setSelectedCategory("All");
-                    setSelectedPriceRange("all");
                     setFeaturedOnly(false);
                     setInStockOnly(false);
                     setSortBy("featured");
@@ -206,33 +178,6 @@ export default function Products() {
                         }`}
                       >
                         {category}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <div className="text-sm font-semibold text-slate-900">
-                  Price range
-                </div>
-                <div className="mt-3 space-y-2">
-                  {priceRanges.map((range) => {
-                    const active = selectedPriceRange === range.value;
-
-                    return (
-                      <button
-                        key={range.value}
-                        type="button"
-                        onClick={() => setSelectedPriceRange(range.value)}
-                        className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${
-                          active
-                            ? "bg-blue-50 font-semibold text-blue-700"
-                            : "bg-slate-50 text-slate-600 hover:bg-blue-50/70 hover:text-slate-900"
-                        }`}
-                      >
-                        <span>{range.label}</span>
-                        {active && <Check className="h-4 w-4" />}
                       </button>
                     );
                   })}
@@ -338,27 +283,6 @@ export default function Products() {
                     //       {product.description}
                     //     </p>
 
-                    //     <div className="mt-3 flex items-center justify-between gap-3">
-                    //       <div>
-                    //         <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-                    //           Starting from
-                    //         </div>
-                    //         <div className="mt-0.5 text-lg font-semibold leading-5 text-slate-950">
-                    //           {product.priceLabel}
-                    //         </div>
-                    //       </div>
-
-                    //       <div
-                    //         className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                    //           product.inStock
-                    //             ? "bg-emerald-50 text-emerald-700"
-                    //             : "bg-slate-100 text-slate-500"
-                    //         }`}
-                    //       >
-                    //         {product.inStock ? "Available" : "On request"}
-                    //       </div>
-                    //     </div>
-
                     //     <div className="mt-3 flex items-center gap-2">
                     //       <Link
                     //         to={`/products/${product.id}`}
@@ -418,17 +342,7 @@ export default function Products() {
                           {product.description}
                         </p>
 
-                        {/* Price + Stock */}
                         <div className="mt-3 flex items-center justify-between">
-                          <div>
-                            <p className="text-[10px] text-slate-400">
-                              Starting from
-                            </p>
-                            <p className="text-base font-semibold text-slate-900">
-                              {product.priceLabel}
-                            </p>
-                          </div>
-
                           <span
                             className={`text-[10px] font-medium ${
                               product.inStock

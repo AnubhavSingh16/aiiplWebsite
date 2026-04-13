@@ -39,8 +39,6 @@ const hasCheckoutDetails = (profile) =>
     value.trim()
   );
 
-const formatPrice = (value) => `Rs. ${value}`;
-
 export default function Cart() {
   const {
     cartItems,
@@ -49,7 +47,6 @@ export default function Cart() {
     increaseQuantity,
     removeFromCart,
     totalItems,
-    totalPrice,
   } = useCart();
 
   const [savedProfile, setSavedProfile] = useState(emptyProfile);
@@ -87,13 +84,7 @@ export default function Cart() {
       return groups;
     }, {});
 
-    const buildSections = Object.values(groupedBuilds).map((group) => ({
-      ...group,
-      totalPrice: group.items.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      ),
-    }));
+    const buildSections = Object.values(groupedBuilds);
 
     const singleItems = cartItems.filter((item) => !item.buildGroupId);
 
@@ -155,8 +146,8 @@ export default function Cart() {
                 Review the products you added.
               </h1>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-                Update quantities, remove items, and confirm the address you want
-                to use before checkout.
+                Make sure everything looks good before proceeding for enquiry.
+                Prices and availability will be confirmed by us after you place the inquiry.
               </p>
             </div>
 
@@ -211,9 +202,6 @@ export default function Cart() {
                           These parts were saved together from the Build PC page.
                         </p>
                       </div>
-                      <div className="text-sm font-semibold text-slate-900">
-                        {formatPrice(group.totalPrice)}/mo
-                      </div>
                     </div>
 
                     <div className="mt-4 space-y-4">
@@ -238,9 +226,6 @@ export default function Cart() {
                             <p className="mt-2 text-sm leading-6 text-slate-600">
                               {item.description}
                             </p>
-                            <div className="mt-3 text-sm font-semibold text-blue-700">
-                              {item.priceLabel}
-                            </div>
                           </div>
 
                           <div className="flex flex-col items-start gap-3 md:items-end">
@@ -273,14 +258,6 @@ export default function Cart() {
                               </button>
                             </div>
 
-                            <div className="text-right">
-                              <div className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                                Total
-                              </div>
-                              <div className="mt-1 text-lg font-semibold text-slate-950">
-                                {formatPrice(item.price * item.quantity)}/mo
-                              </div>
-                            </div>
                           </div>
                         </article>
                       ))}
@@ -309,9 +286,6 @@ export default function Cart() {
                       <p className="mt-2 text-sm leading-6 text-slate-600">
                         {item.description}
                       </p>
-                      <div className="mt-3 text-sm font-semibold text-blue-700">
-                        {item.priceLabel}
-                      </div>
                     </div>
 
                     <div className="flex flex-col items-start gap-3 md:items-end">
@@ -344,14 +318,6 @@ export default function Cart() {
                         </button>
                       </div>
 
-                      <div className="text-right">
-                        <div className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                          Total
-                        </div>
-                        <div className="mt-1 text-lg font-semibold text-slate-950">
-                          {formatPrice(item.price * item.quantity)}/mo
-                        </div>
-                      </div>
                     </div>
                   </article>
                 ))}
@@ -370,19 +336,12 @@ export default function Cart() {
                     <span>Products selected</span>
                     <span className="font-semibold text-slate-900">{cartItems.length}</span>
                   </div>
-                  <div className="h-px bg-slate-100" />
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-slate-600">Estimated total</span>
-                    <span className="text-2xl font-semibold text-slate-950">
-                      {formatPrice(totalPrice)}/mo
-                    </span>
-                  </div>
                 </div>
 
                 <div className="mt-6 rounded-2xl bg-slate-50 p-4">
                   <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                    <MapPin className="h-4 w-4 text-blue-700" />
-                    Delivery details
+                    <User className="h-4 w-4 text-blue-700" />
+                    Account details for inquiry
                   </div>
                   {canUseSavedAddress ? (
                     <div className="mt-3 space-y-1 text-sm text-slate-600">
@@ -410,7 +369,7 @@ export default function Cart() {
                   onClick={handleProceedToCheckout}
                   className="mt-6 w-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
-                  Proceed to checkout
+                  Request Inquiry
                 </button>
                 <Link
                   to="/products"
@@ -431,10 +390,10 @@ export default function Cart() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">
-                  Checkout Address
+                  Enquiry Details
                 </div>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-950">
-                  Continue with saved details?
+                <h2 className="mt-2 text-xl font-semibold text-slate-950">
+                  Continue with saved information?
                 </h2>
               </div>
               <button
@@ -459,14 +418,14 @@ export default function Cart() {
                 onClick={handleUseSavedAddress}
                 className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
               >
-                Continue with this address
+                Continue with this user
               </button>
               <button
                 type="button"
                 onClick={handleOpenCheckoutForm}
                 className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-200 hover:text-blue-700"
               >
-                Use different details
+                Use different user
               </button>
             </div>
           </div>
@@ -479,10 +438,10 @@ export default function Cart() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">
-                  Checkout Form
+                  User Form
                 </div>
                 <h2 className="mt-2 text-2xl font-semibold text-slate-950">
-                  Add delivery details
+                  Add your details for the enquiry
                 </h2>
                 <p className="mt-2 text-sm text-slate-600">
                   Save these details now and we will reuse them next time as well.

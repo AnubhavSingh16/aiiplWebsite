@@ -17,8 +17,6 @@ import {
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 
-const formatPrice = (value) => `Rs. ${value}`;
-
 const buildCategories = [
   {
     key: "processor",
@@ -27,9 +25,9 @@ const buildCategories = [
     accent: "from-cyan-400 to-blue-500",
     subtitle: "Choose the brain of your setup",
     options: [
-      { id: "intel-i5", name: "Intel Core i5 14600K", price: 320, tag: "Balanced" },
-      { id: "intel-i7", name: "Intel Core i7 14700K", price: 430, tag: "Creator" },
-      { id: "ryzen-7", name: "AMD Ryzen 7 7800X3D", price: 470, tag: "Gaming" },
+      { id: "intel-i5", name: "Intel Core i5 14600K", tag: "Balanced" },
+      { id: "intel-i7", name: "Intel Core i7 14700K", tag: "Creator" },
+      { id: "ryzen-7", name: "AMD Ryzen 7 7800X3D", tag: "Gaming" },
     ],
   },
   {
@@ -39,9 +37,9 @@ const buildCategories = [
     accent: "from-fuchsia-400 to-violet-500",
     subtitle: "Visual power and gaming performance",
     options: [
-      { id: "rtx-4060", name: "NVIDIA RTX 4060 Ti", price: 420, tag: "Smooth 1080p" },
-      { id: "rtx-4070", name: "NVIDIA RTX 4070 Super", price: 650, tag: "High FPS" },
-      { id: "rx-7800", name: "AMD RX 7800 XT", price: 590, tag: "Value Power" },
+      { id: "rtx-4060", name: "NVIDIA RTX 4060 Ti", tag: "Smooth 1080p" },
+      { id: "rtx-4070", name: "NVIDIA RTX 4070 Super", tag: "High FPS" },
+      { id: "rx-7800", name: "AMD RX 7800 XT", tag: "Value Power" },
     ],
   },
   {
@@ -51,9 +49,9 @@ const buildCategories = [
     accent: "from-emerald-400 to-teal-500",
     subtitle: "Capacity for multitasking and speed",
     options: [
-      { id: "16gb", name: "16GB DDR5 RGB Kit", price: 110, tag: "Starter" },
-      { id: "32gb", name: "32GB DDR5 Performance Kit", price: 190, tag: "Recommended" },
-      { id: "64gb", name: "64GB DDR5 Pro Kit", price: 340, tag: "Workstation" },
+      { id: "16gb", name: "16GB DDR5 RGB Kit", tag: "Starter" },
+      { id: "32gb", name: "32GB DDR5 Performance Kit", tag: "Recommended" },
+      { id: "64gb", name: "64GB DDR5 Pro Kit", tag: "Workstation" },
     ],
   },
   {
@@ -63,9 +61,9 @@ const buildCategories = [
     accent: "from-amber-400 to-orange-500",
     subtitle: "Fast SSD options for work and play",
     options: [
-      { id: "1tb", name: "1TB NVMe Gen4 SSD", price: 120, tag: "Fast Boot" },
-      { id: "2tb", name: "2TB NVMe Gen4 SSD", price: 210, tag: "Most Popular" },
-      { id: "4tb", name: "4TB NVMe Gen4 SSD", price: 390, tag: "Massive Space" },
+      { id: "1tb", name: "1TB NVMe Gen4 SSD", tag: "Fast Boot" },
+      { id: "2tb", name: "2TB NVMe Gen4 SSD", tag: "Most Popular" },
+      { id: "4tb", name: "4TB NVMe Gen4 SSD", tag: "Massive Space" },
     ],
   },
   {
@@ -75,9 +73,9 @@ const buildCategories = [
     accent: "from-sky-400 to-indigo-500",
     subtitle: "Keep performance stable under load",
     options: [
-      { id: "air", name: "Dual Tower Air Cooler", price: 85, tag: "Reliable" },
-      { id: "aio240", name: "240mm Liquid Cooler", price: 160, tag: "Quiet RGB" },
-      { id: "aio360", name: "360mm Liquid Cooler", price: 230, tag: "Max Cooling" },
+      { id: "air", name: "Dual Tower Air Cooler", tag: "Reliable" },
+      { id: "aio240", name: "240mm Liquid Cooler", tag: "Quiet RGB" },
+      { id: "aio360", name: "360mm Liquid Cooler", tag: "Max Cooling" },
     ],
   },
   {
@@ -87,9 +85,9 @@ const buildCategories = [
     accent: "from-rose-400 to-pink-500",
     subtitle: "Match your build with the right screen",
     options: [
-      { id: "24fhd", name: "24 inch 180Hz FHD Monitor", price: 190, tag: "Esports" },
-      { id: "27qhd", name: "27 inch 240Hz QHD Monitor", price: 390, tag: "Immersive" },
-      { id: "34uw", name: "34 inch Ultrawide Display", price: 620, tag: "Creator" },
+      { id: "24fhd", name: "24 inch 180Hz FHD Monitor", tag: "Esports" },
+      { id: "27qhd", name: "27 inch 240Hz QHD Monitor", tag: "Immersive" },
+      { id: "34uw", name: "34 inch Ultrawide Display", tag: "Creator" },
     ],
   },
 ];
@@ -109,11 +107,6 @@ export default function BuildPc() {
         }))
         .filter((category) => category.selected),
     [selectedParts]
-  );
-
-  const totalPrice = selectedEntries.reduce(
-    (total, category) => total + category.selected.price,
-    0
   );
 
   const completion = Math.round((selectedEntries.length / buildCategories.length) * 100);
@@ -142,8 +135,6 @@ export default function BuildPc() {
         category: "Custom PC Build",
         type: entry.label,
         description: `${entry.label} selected for your saved custom PC build.`,
-        price: entry.selected.price,
-        priceLabel: `${formatPrice(entry.selected.price)}/mo`,
         image:
           "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=900&q=80",
         buildCategory: entry.label,
@@ -197,7 +188,6 @@ export default function BuildPc() {
               </div>
               <div className="mt-4 flex items-center justify-between text-sm text-slate-300">
                 <span>{selectedEntries.length} of {buildCategories.length} categories configured</span>
-                <span className="font-semibold text-white">{formatPrice(totalPrice)}</span>
               </div>
             </div>
           </div>
@@ -232,11 +222,6 @@ export default function BuildPc() {
                       </div>
 
                       <div className="flex items-center gap-3">
-                        {selected && (
-                          <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-                            {formatPrice(selected.price)}
-                          </span>
-                        )}
                         <ChevronDown
                           className={`h-5 w-5 text-slate-400 transition-transform duration-300 ${
                             isOpen ? "rotate-180" : "rotate-0"
@@ -268,9 +253,6 @@ export default function BuildPc() {
                                 </div>
                                 <div className="mt-3 inline-flex rounded-full border border-white/8 bg-white/8 px-3 py-1 text-[11px] font-semibold text-slate-300">
                                   {option.tag}
-                                </div>
-                                <div className="mt-4 text-lg font-semibold text-white">
-                                  {formatPrice(option.price)}
                                 </div>
                               </button>
                             );
@@ -357,16 +339,6 @@ export default function BuildPc() {
                 </div>
               </div>
 
-              <div className="mt-6 rounded-[24px] border border-white/8 bg-white/6 p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-sm text-slate-300">Estimated build total</span>
-                  <span className="text-3xl font-semibold text-white">{formatPrice(totalPrice)}</span>
-                </div>
-                <div className="mt-2 text-sm text-slate-400">
-                  Save this build to keep all selected parts together during checkout.
-                </div>
-              </div>
-
               {buildSaved && (
                 <div className="mt-4 rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-300">
                   Your custom build has been saved to the cart as one grouped setup.
@@ -397,3 +369,4 @@ export default function BuildPc() {
     </div>
   );
 }
+

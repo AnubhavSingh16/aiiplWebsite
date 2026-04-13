@@ -1,4 +1,3 @@
-const formatPriceLabel = (price) => `Rs. ${price}/mo`;
 
 export const productCatalog = [
   {
@@ -6,8 +5,6 @@ export const productCatalog = [
     name: "Cloud VPS Pro",
     category: "Hosting",
     type: "Virtual Servers",
-    price: 49,
-    priceLabel: formatPriceLabel(49),
     rating: 4.9,
     badge: "Best Seller",
     description:
@@ -22,8 +19,6 @@ export const productCatalog = [
     name: "Dedicated Server X",
     category: "Servers",
     type: "Bare Metal",
-    price: 129,
-    priceLabel: formatPriceLabel(129),
     rating: 4.8,
     badge: "Popular",
     description:
@@ -38,8 +33,6 @@ export const productCatalog = [
     name: "Secure Backup Storage",
     category: "Storage",
     type: "Backup",
-    price: 29,
-    priceLabel: formatPriceLabel(29),
     rating: 4.7,
     badge: "Top Rated",
     description:
@@ -54,8 +47,6 @@ export const productCatalog = [
     name: "Business Cloud Suite",
     category: "Cloud",
     type: "Enterprise Cloud",
-    price: 89,
-    priceLabel: formatPriceLabel(89),
     rating: 4.9,
     badge: "Featured",
     description:
@@ -70,8 +61,6 @@ export const productCatalog = [
     name: "Edge CDN Boost",
     category: "Cloud",
     type: "Performance",
-    price: 35,
-    priceLabel: formatPriceLabel(35),
     rating: 4.6,
     badge: "Fast Delivery",
     description:
@@ -86,8 +75,6 @@ export const productCatalog = [
     name: "AI Compute Cluster",
     category: "Servers",
     type: "GPU Compute",
-    price: 179,
-    priceLabel: formatPriceLabel(179),
     rating: 4.9,
     badge: "New",
     description:
@@ -102,8 +89,6 @@ export const productCatalog = [
     name: "Archive Vault",
     category: "Storage",
     type: "Cold Storage",
-    price: 19,
-    priceLabel: formatPriceLabel(19),
     rating: 4.5,
     badge: "Budget Pick",
     description:
@@ -118,8 +103,6 @@ export const productCatalog = [
     name: "Managed Kubernetes Grid",
     category: "Hosting",
     type: "Containers",
-    price: 149,
-    priceLabel: formatPriceLabel(149),
     rating: 4.8,
     badge: "Enterprise",
     description:
@@ -134,8 +117,6 @@ export const productCatalog = [
     name: "Hybrid Cloud Bridge",
     category: "Cloud",
     type: "Connectivity",
-    price: 99,
-    priceLabel: formatPriceLabel(99),
     rating: 4.7,
     badge: "Hybrid Ready",
     description:
@@ -150,8 +131,6 @@ export const productCatalog = [
     name: "Disaster Recovery Max",
     category: "Storage",
     type: "Business Continuity",
-    price: 119,
-    priceLabel: formatPriceLabel(119),
     rating: 4.8,
     badge: "Protected",
     description:
@@ -166,8 +145,6 @@ export const productCatalog = [
     name: "Startup Launch Hosting",
     category: "Hosting",
     type: "Shared Cloud",
-    price: 15,
-    priceLabel: formatPriceLabel(15),
     rating: 4.4,
     badge: "Starter",
     description:
@@ -182,8 +159,6 @@ export const productCatalog = [
     name: "Private Cloud Core",
     category: "Cloud",
     type: "Private Cloud",
-    price: 159,
-    priceLabel: formatPriceLabel(159),
     rating: 4.9,
     badge: "Premium",
     description:
@@ -198,8 +173,6 @@ export const productCatalog = [
     name: "Dedicated Server X",
     category: "Servers",
     type: "Bare Metal",
-    price: 129,
-    priceLabel: formatPriceLabel(129),
     rating: 4.8,
     badge: "Popular",
     description:
@@ -214,8 +187,6 @@ export const productCatalog = [
     name: "Secure Backup Storage",
     category: "Storage",
     type: "Backup",
-    price: 29,
-    priceLabel: formatPriceLabel(29),
     rating: 4.7,
     badge: "Top Rated",
     description:
@@ -230,8 +201,6 @@ export const productCatalog = [
     name: "Business Cloud Suite",
     category: "Cloud",
     type: "Enterprise Cloud",
-    price: 89,
-    priceLabel: formatPriceLabel(89),
     rating: 4.9,
     badge: "Featured",
     description:
@@ -246,8 +215,6 @@ export const productCatalog = [
     name: "Edge CDN Boost",
     category: "Cloud",
     type: "Performance",
-    price: 35,
-    priceLabel: formatPriceLabel(35),
     rating: 4.6,
     badge: "Fast Delivery",
     description:
@@ -262,8 +229,6 @@ export const productCatalog = [
     name: "AI Compute Cluster",
     category: "Servers",
     type: "GPU Compute",
-    price: 179,
-    priceLabel: formatPriceLabel(179),
     rating: 4.9,
     badge: "New",
     description:
@@ -278,8 +243,6 @@ export const productCatalog = [
     name: "Archive Vault",
     category: "Storage",
     type: "Cold Storage",
-    price: 19,
-    priceLabel: formatPriceLabel(19),
     rating: 4.5,
     badge: "Budget Pick",
     description:
@@ -294,8 +257,6 @@ export const productCatalog = [
     name: "Managed Kubernetes Grid",
     category: "Hosting",
     type: "Containers",
-    price: 149,
-    priceLabel: formatPriceLabel(149),
     rating: 4.8,
     badge: "Enterprise",
     description:
@@ -310,8 +271,6 @@ export const productCatalog = [
     name: "Hybrid Cloud Bridge",
     category: "Cloud",
     type: "Connectivity",
-    price: 99,
-    priceLabel: formatPriceLabel(99),
     rating: 4.7,
     badge: "Hybrid Ready",
     description:
@@ -326,8 +285,6 @@ export const productCatalog = [
     name: "Disaster Recovery Max",
     category: "Storage",
     type: "Business Continuity",
-    price: 119,
-    priceLabel: formatPriceLabel(119),
     rating: 4.8,
     badge: "Protected",
     description:
@@ -342,8 +299,6 @@ export const productCatalog = [
     name: "Startup Launch Hosting",
     category: "Hosting",
     type: "Shared Cloud",
-    price: 15,
-    priceLabel: formatPriceLabel(15),
     rating: 4.4,
     badge: "Starter",
     description:
@@ -358,8 +313,6 @@ export const productCatalog = [
     name: "Private Cloud Core",
     category: "Cloud",
     type: "Private Cloud",
-    price: 159,
-    priceLabel: formatPriceLabel(159),
     rating: 4.9,
     badge: "Premium",
     description:
@@ -370,3 +323,4 @@ export const productCatalog = [
     inStock: true,
   },
 ];
+

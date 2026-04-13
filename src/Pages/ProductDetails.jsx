@@ -105,16 +105,6 @@ export default function ProductDetails() {
                 and a more polished delivery experience from day one.
               </p>
 
-              <div className="mt-6 rounded-[22px] bg-slate-950 p-5 text-white">
-                <div className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                  Starting from
-                </div>
-                <div className="mt-2 text-4xl font-semibold">{product.priceLabel}</div>
-                <div className="mt-2 text-sm text-slate-300">
-                  Flexible monthly pricing with room to scale as your needs grow.
-                </div>
-              </div>
-
               <div className="mt-6 space-y-3">
                 {highlights.map((item) => (
                   <div key={item} className="flex items-start gap-3 text-sm text-slate-600">
@@ -184,7 +174,6 @@ export default function ProductDetails() {
                       <h3 className="mt-1 text-base font-semibold text-slate-950">{item.name}</h3>
                       <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
                       <div className="mt-4 flex items-center justify-between gap-3">
-                        <div className="text-lg font-semibold text-slate-950">{item.priceLabel}</div>
                         <div className="inline-flex items-center gap-1 text-sm font-medium text-amber-600">
                           <Star className="h-4 w-4 fill-current" />
                           {item.rating}
