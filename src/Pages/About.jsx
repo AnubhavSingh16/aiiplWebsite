@@ -3,12 +3,14 @@ import {
   ArrowRight,
   Award,
   Briefcase,
+  Eye,
   Headphones,
   Layers3,
   Rocket,
   Server,
   ShieldCheck,
   Sparkles,
+  Target,
   Users,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
@@ -60,6 +62,25 @@ export default function About() {
       icon: Rocket,
       title: "Fast service",
       text: "Quick communication, practical answers, and a stronger focus on helping teams keep momentum.",
+    },
+  ];
+
+  const purpose = [
+    {
+      icon: Eye,
+      label: "Our Vision",
+      title: "To grow into a globally respected name in high-performance computing.",
+      text: "We aim to build advanced systems that stand confidently alongside world-class machines, with performance, reliability, and innovation at the center.",
+      tone: "from-sky-500 to-blue-600",
+      surface: "border-blue-100 bg-blue-50/70",
+    },
+    {
+      icon: Target,
+      label: "Our Mission",
+      title: "To equip businesses, researchers, and creators with computing solutions built for real outcomes.",
+      text: "By delivering thoughtfully configured systems, we help ambitious teams move faster, tackle demanding workloads, and turn complex ideas into progress.",
+      tone: "from-orange-500 to-pink-500",
+      surface: "border-orange-100 bg-orange-50/80",
     },
   ];
 
@@ -132,7 +153,7 @@ export default function About() {
             </div>
           </div>
 
-          <section className="mt-16 grid gap-6 md:grid-cols-3">
+          {/* <section className="mt-16 grid gap-6 md:grid-cols-3">
             {pillars.map((item) => {
               const Icon = item.icon;
 
@@ -149,9 +170,9 @@ export default function About() {
                 </div>
               );
             })}
-          </section>
+          </section> */}
 
-          <section className="mt-16 grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <section className="mt-25 grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div className="rounded-[36px] border border-emerald-100 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.18),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(251,146,60,0.18),_transparent_24%),linear-gradient(135deg,_#0b1220_0%,_#132238_48%,_#17345d_100%)] p-8 text-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-emerald-200">
                 <Users className="h-4 w-4" />
@@ -190,26 +211,57 @@ export default function About() {
             </div>
           </section>
 
-          <section className="mt-16">
-            <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-              <div>
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-pink-600">
-                  Why Choose Us
-                </div>
-                <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
-                  Stronger quality, warmer service, and a more colorful approach to delivery.
-                </h2>
-                <p className="mt-5 text-base leading-8 text-slate-600">
-                  We don&apos;t just provide products. We help shape a better overall technology experience with more care in communication, better recommendations, and cleaner execution.
-                </p>
-                <img
-                  src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
-                  alt="Professional support and service"
-                  className="mt-8 h-[240px] w-full rounded-[28px] object-cover shadow-[0_20px_60px_rgba(15,23,42,0.08)]"
-                />
+          <section className="mt-25">
+            <div className="text-center">
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-600">
+                Vision & Mission
               </div>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+                A clearer direction for where we are going and who we build for.
+              </h2>
+              {/* <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600">
+                Our long-term focus is centered on world-class performance and meaningful impact for the people and teams who rely on powerful computing every day.
+              </p> */}
+            </div>
 
-              <div className="grid gap-5 lg:grid-cols-3">
+            <div className="mt-10 grid gap-6 lg:grid-cols-2">
+              {purpose.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.label}
+                    className={`rounded-[32px] border p-8 shadow-[0_18px_55px_rgba(15,23,42,0.06)] ${item.surface}`}
+                  >
+                    <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.tone} text-white shadow-lg`}>
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      {item.label}
+                    </div>
+                    <h3 className="mt-3 text-2xl font-semibold text-slate-950">
+                      {item.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-7 text-slate-600">
+                      {item.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="mt-25">
+            <div className="text-center">
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-pink-600">
+                Why Choose Us
+              </div>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+                The strengths that make working with us simpler and stronger.
+              </h2>
+            </div>
+
+            <div className="grid gap-5 lg:grid-cols-3 mt-10">
                 {values.map((item, index) => {
                   const Icon = item.icon;
                   const tones = [
@@ -231,11 +283,10 @@ export default function About() {
                     </div>
                   );
                 })}
-              </div>
             </div>
           </section>
 
-          <section className="mt-16 rounded-[38px] bg-[linear-gradient(135deg,_#fb923c_0%,_#ec4899_48%,_#8b5cf6_100%)] p-10 text-white shadow-[0_30px_90px_rgba(236,72,153,0.18)]">
+          <section className="mt-25 rounded-[38px] bg-[linear-gradient(135deg,_#fb923c_0%,_#ec4899_48%,_#8b5cf6_100%)] p-10 text-white shadow-[0_30px_90px_rgba(236,72,153,0.18)]">
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-pink-100">

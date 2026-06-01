@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Activity,
+  ChevronLeft,
   ChevronRight,
   Cpu,
   Server,
@@ -15,42 +15,9 @@ import Navbar from "../components/Navbar";
 import SolutionsSection from "../components/Solutions";
 import { productCatalog } from "../data/products";
 
-const heroGallery = [
-  {
-    title: "Enterprise racks",
-    image:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Cloud operations",
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Custom PC assembly",
-    image:
-      "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Modern workstations",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Network infrastructure",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Support desk",
-    image:
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80",
-  },
-];
-
 export default function Home() {
-  const [heroImageIndex, setHeroImageIndex] = useState(0);
-  const [heroTransitionEnabled, setHeroTransitionEnabled] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideDirection, setSlideDirection] = useState("next");
 
   const highlights = [
     {
@@ -78,39 +45,53 @@ export default function Home() {
     rating: product.rating.toFixed(1),
   }));
 
+  const heroSlides = [
+    {
+      product: productCatalog[1],
+      eyebrow: "Built for heavy-duty server workloads",
+      title: "Dedicated servers that stay fast under serious demand.",
+      description:
+        "From enterprise apps to traffic-heavy platforms, our server range is designed for stable performance, stronger uptime, and room to scale without friction.",
+    },
+    {
+      product: productCatalog[0],
+      eyebrow: "Flexible hosting for growing teams",
+      title: "Cloud VPS solutions that launch quickly and grow cleanly.",
+      description:
+        "Choose hosting products that make deployment simpler, keep applications responsive, and give your business a solid foundation from day one.",
+    },
+    {
+      product: productCatalog[5],
+      eyebrow: "AI and compute-focused infrastructure",
+      title: "GPU-ready systems for training, inference, and advanced workloads.",
+      description:
+        "When your projects demand parallel compute and reliable throughput, our AI-ready product line helps researchers and builders move faster with confidence.",
+    },
+    {
+      product: productCatalog[11],
+      eyebrow: "Private cloud with more control",
+      title: "Secure cloud platforms for teams that need privacy and stability.",
+      description:
+        "Our private cloud offerings are tailored for organizations that need dependable infrastructure, tighter control, and a cleaner long-term path to scale.",
+    },
+  ];
+
+  const activeSlide = heroSlides[currentSlide];
+  const heroAccent = "from-slate-950 via-slate-800 to-sky-700";
+
+  const updateHeroSlide = (nextSlide, direction = "next") => {
+    setSlideDirection(direction);
+    setCurrentSlide(nextSlide);
+  };
+
   useEffect(() => {
     const intervalId = window.setInterval(() => {
-      setHeroTransitionEnabled(true);
-      setHeroImageIndex((current) => current + 1);
-    }, 2400);
+      setSlideDirection("next");
+      setCurrentSlide((current) => (current + 1) % heroSlides.length);
+    }, 5200);
 
     return () => window.clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    if (heroImageIndex !== heroGallery.length) {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setHeroTransitionEnabled(false);
-      setHeroImageIndex(0);
-    }, 700);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [heroImageIndex]);
-
-  useEffect(() => {
-    if (heroTransitionEnabled) {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setHeroTransitionEnabled(true);
-    }, 60);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [heroTransitionEnabled]);
+  }, [heroSlides.length]);
 
   const promoBanners = [
     {
@@ -128,163 +109,249 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#f8fbff] text-slate-900">
+      <style>
+        {`
+          @keyframes heroCopySlide {
+            from {
+              opacity: 0;
+              transform: translateX(var(--hero-copy-shift, 28px));
+              filter: blur(8px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+              filter: blur(0);
+            }
+          }
+
+          @keyframes heroCopyItem {
+            from {
+              opacity: 0;
+              transform: translateY(16px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @media (prefers-reduced-motion: no-preference) {
+            .hero-copy-slide {
+              animation: heroCopySlide 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+              will-change: opacity, transform, filter;
+            }
+
+            .hero-copy-slide [data-hero-copy] {
+              animation: heroCopyItem 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+              will-change: opacity, transform;
+            }
+
+            .hero-copy-slide [data-hero-copy="meta"] {
+              animation-delay: 80ms;
+            }
+
+            .hero-copy-slide [data-hero-copy="title"] {
+              animation-delay: 150ms;
+            }
+
+            .hero-copy-slide [data-hero-copy="description"] {
+              animation-delay: 220ms;
+            }
+
+            .hero-copy-slide [data-hero-copy="actions"] {
+              animation-delay: 300ms;
+            }
+          }
+        `}
+      </style>
       <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
-        <div className="mx-auto h-[560px] max-w-7xl rounded-b-[56px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.28),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(236,72,153,0.16),_transparent_24%),radial-gradient(circle_at_50%_10%,_rgba(16,185,129,0.14),_transparent_28%),linear-gradient(180deg,_#ffffff_0%,_#eef6ff_52%,_#f8fbff_100%)]" />
+        <div className="mx-auto h-[620px]  rounded-b-[56px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.28),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(236,72,153,0.16),_transparent_24%),radial-gradient(circle_at_50%_10%,_rgba(16,185,129,0.14),_transparent_28%),linear-gradient(180deg,_#ffffff_0%,_#eef6ff_52%,_#f8fbff_100%)]" />
       </div>
       <div className="absolute -top-10 left-1/2 -z-10 h-64 w-64 -translate-x-[520px] rounded-full bg-cyan-300/20 blur-3xl" />
       <div className="absolute right-0 top-24 -z-10 h-72 w-72 rounded-full bg-pink-300/20 blur-3xl" />
 
       <Navbar />
 
-      <section className="px-6 pb-20 pt-32">
-        <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.08fr_0.92fr]">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm backdrop-blur">
-              <Sparkles className="h-4 w-4" />
-              Smart digital infrastructure for modern business
-            </div>
+      <section className="px-0 pb-20 pt-24 ">
+        <div className="overflow-hidden  lg:min-h-screen">
+          <div className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-[1600px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
+            <div className="relative overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
+              {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(148,163,184,0.14),_transparent_30%),linear-gradient(180deg,_rgba(255,255,255,0.96)_0%,_rgba(248,250,252,0.96)_100%)]" /> */}
+              {/* <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-slate-200/60 blur-3xl" /> */}
 
-            <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-slate-950 md:text-5xl">
-              Unleash Performance with Next-Gen PCs & Servers.
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              We help businesses present their hosting, cloud, custom PC, and infrastructure
-              services with more color, more clarity, and a modern digital presence that
-              feels confident from the very first scroll.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 px-6 py-3.5 font-semibold text-white shadow-[0_18px_40px_rgba(59,130,246,0.28)] transition hover:scale-[1.01]"
+              <div
+                key={activeSlide.product.id}
+                className="hero-copy-slide relative"
+                style={{
+                  "--hero-copy-shift":
+                    slideDirection === "previous" ? "-28px" : "28px",
+                }}
               >
-                Explore Products
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/build-pc"
-                className="rounded-full border border-emerald-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700"
-              >
-                Build Custom PC
-              </Link>
-            </div>
-
-            <div className="mt-12 rounded-[24px] border border-blue-100/90 bg-[linear-gradient(180deg,_rgba(255,255,255,0.92)_0%,_rgba(241,247,255,0.88)_100%)] p-3.5 shadow-[0_20px_60px_rgba(49,120,246,0.5)] backdrop-blur-md">
-              <div className="mb-2 flex items-center justify-between px-1">
-                <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Featured Categories
+                <div
+                  data-hero-copy="eyebrow"
+                  className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm backdrop-blur"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {activeSlide.eyebrow}
                 </div>
-                <div className="flex items-center gap-1.5">
-                  {heroGallery.map((_, index) => (
-                    <span
-                      key={index}
-                      className={`h-1.5 rounded-full transition-all duration-500 ${
-                        index === heroImageIndex % heroGallery.length
-                          ? "w-4 bg-blue-600"
-                          : "w-1.5 bg-slate-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
 
-              <div className="grid h-[168px] gap-3 grid-cols-[1.15fr_0.85fr_0.85fr]">
-                <div className="col-span-3 overflow-hidden rounded-[24px]">
-                  <div
-                    className={`flex gap-3 ${heroTransitionEnabled ? "transition-transform duration-700 ease-out" : ""}`}
-                    style={{ transform: `translateX(calc(-${heroImageIndex} * (33.333% + 0.75rem)))` }}
+                <div className="mt-6 min-h-[320px] lg:min-h-[380px]">
+                  <p
+                    data-hero-copy="meta"
+                    className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500"
                   >
-                    {[...heroGallery, ...heroGallery.slice(0, 3)].map((item, index) => (
-                      <div
-                        key={`${item.title}-${index}`}
-                        className="group relative h-[168px] overflow-hidden rounded-[18px] bg-slate-100"
-                        style={{ flex: "0 0 calc((100% - 1.5rem) / 3)" }}
-                      >
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/58 via-slate-950/10 to-transparent px-3 py-2.5">
-                          <div className="text-[11px] font-medium text-white/95">{item.title}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    {activeSlide.product.category} / {activeSlide.product.type}
+                  </p>
+                  <h1
+                    data-hero-copy="title"
+                    className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-slate-950 md:text-5xl"
+                  >
+                    {activeSlide.title}
+                  </h1>
+                  <p
+                    data-hero-copy="description"
+                    className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"
+                  >
+                    {activeSlide.description}
+                  </p>
 
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-cyan-200/40 via-blue-200/30 to-pink-200/30 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[36px] border border-white bg-white/90 p-6 shadow-[0_30px_90px_rgba(37,99,235,0.14)] backdrop-blur">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium text-blue-700">Homepage Preview</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-slate-950">
-                    More colorful, more layered, more premium.
-                  </h2>
-                </div>
-                <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-400 p-3 text-white shadow-lg shadow-blue-200">
-                  <Activity className="h-5 w-5" />
-                </div>
-              </div>
-
-              <div className="mt-8 grid gap-5">
-                <div className="overflow-hidden rounded-[30px] border border-blue-100 bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-                    alt="Modern digital workspace"
-                    className="h-[360px] w-full object-cover"
-                  />
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
-                  <div className="rounded-[26px] border border-cyan-100 bg-gradient-to-br from-cyan-50 to-blue-50 p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-2xl bg-white p-3 text-cyan-600 shadow-sm">
-                        <Cpu className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <div className="text-sm text-slate-500">Visual Direction</div>
-                        <div className="mt-1 text-lg font-semibold text-slate-950">
-                          Bigger imagery and richer highlights
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[26px] bg-gradient-to-br from-slate-950 via-blue-900 to-sky-600 p-5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]">
-                    <div className="text-sm text-sky-100">Brand Energy</div>
-                    <div className="mt-2 text-2xl font-semibold">Fresh + vivid</div>
-                    <div className="mt-3 text-sm leading-6 text-slate-200">
-                      Cleaner structure with stronger color moments.
-                    </div>
+                  <div
+                    data-hero-copy="actions"
+                    className="mt-10 flex flex-wrap gap-4"
+                  >
+                    <Link
+                      to="/products"
+                      className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${heroAccent} px-6 py-3.5 font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.16)] transition hover:scale-[1.01]`}
+                    >
+                      Explore Products
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      to="/build-pc"
+                      className="rounded-full border border-emerald-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700"
+                    >
+                      Build Custom PC
+                    </Link>
                   </div>
                 </div>
 
-                {/* <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-[22px] border border-emerald-100 bg-emerald-50/70 p-4">
-                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-                      Hosting
+                {/* <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-slate-200 bg-white px-4 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
+                  <div>
+                    <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      Featured Product
                     </div>
-                    <div className="mt-2 text-sm font-semibold text-slate-950">Faster deployment</div>
+                    <div className="mt-2 text-lg font-semibold text-slate-950">
+                      {activeSlide.product.name}
+                    </div>
+                    <div className="mt-1 text-sm text-slate-600">
+                      {`${activeSlide.product.badge} • Rated ${activeSlide.product.rating.toFixed(1)}`}
+                    </div>
                   </div>
-                  <div className="rounded-[22px] border border-pink-100 bg-pink-50/70 p-4">
-                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-pink-700">
-                      PCs
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-slate-950">Custom build flow</div>
-                  </div>
-                  <div className="rounded-[22px] border border-blue-100 bg-blue-50/70 p-4">
-                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                      Support
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-slate-950">Always within reach</div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentSlide(
+                          (currentSlide - 1 + heroSlides.length) % heroSlides.length
+                        )
+                      }
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
+                      aria-label="Previous slide"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentSlide((currentSlide + 1) % heroSlides.length)}
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
+                      aria-label="Next slide"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
                   </div>
                 </div> */}
+              </div>
+            </div>
+
+            <div className="relative min-h-[420px] overflow-hidden  p-5 sm:p-7 lg:min-h-screen ">
+              <div className="absolute inset-0 " />
+
+              <div className="relative h-full rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-md">
+                <div className="relative h-full overflow-hidden rounded-[28px]">
+                  {heroSlides.map((slide, index) => {
+                    const isActive = index === currentSlide;
+
+                    return (
+                      <div
+                        key={slide.product.id}
+                        className={`absolute inset-0 transition-all duration-700 ${
+                          isActive
+                            ? "translate-x-0 opacity-100"
+                            : index < currentSlide
+                              ? "-translate-x-8 opacity-0"
+                              : "translate-x-8 opacity-0"
+                        }`}
+                      >
+                        <img
+                          src={slide.product.image}
+                          alt={slide.product.name}
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent" />
+
+                        <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-5">
+                          <div className="rounded-full border border-white/15 bg-slate-950/35 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur">
+                            {slide.product.category}
+                          </div>
+                          <div className={`rounded-full bg-gradient-to-r ${heroAccent} px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg`}>
+                            {slide.product.badge}
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+                          <div className="max-w-lg rounded-[28px] border border-white/12 bg-slate-950/45 p-5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] backdrop-blur-md">
+                            <div className="text-sm text-sky-100">{slide.product.type}</div>
+                            <div className="mt-2 text-3xl font-semibold">
+                              {slide.product.name}
+                            </div>
+                            <p className="mt-3 text-sm leading-7 text-slate-200">
+                              {slide.product.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    {heroSlides.map((slide, index) => (
+                      <button
+                        key={slide.product.id}
+                        type="button"
+                        onClick={() => {
+                          if (index !== currentSlide) {
+                            updateHeroSlide(
+                              index,
+                              index < currentSlide ? "previous" : "next"
+                            );
+                          }
+                        }}
+                        className={`h-2.5 rounded-full transition-all duration-300 ${
+                          index === currentSlide
+                            ? "w-10 bg-white"
+                            : "w-2.5 bg-white/45 hover:bg-white/70"
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  {/* <div className="text-sm font-medium text-white/85">
+                    0{currentSlide + 1} / 0{heroSlides.length}
+                  </div> */}
+                </div>
               </div>
             </div>
           </div>
@@ -369,52 +436,52 @@ export default function Home() {
       />
 
       <section className="px-6 py-20">
-  <div className="mx-auto max-w-7xl">
-    <div className="max-w-2xl">
-      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-        Why this design works
-      </p>
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+              Why this design works
+            </p>
 
-      <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-        A fresh homepage built around clarity and confidence.
-      </h2>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
+              A fresh homepage built around clarity and confidence.
+            </h2>
 
-      <p className="mt-4 text-lg leading-8 text-slate-600">
-        The new layout uses light surfaces, blue accents, improved spacing,
-        and more polished text so the homepage feels professional and easy to trust.
-      </p>
-    </div>
-
-    <div className="mt-12 grid gap-6 md:grid-cols-3">
-      {highlights.map((item) => {
-        const Icon = item.icon;
-        return (
-          <div
-            key={item.title}
-            className="rounded-[28px] p-8 bg-gradient-to-br from-blue-100 via-white to-blue-200 border border-blue-300 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
-              <Icon className="h-6 w-6" />
-            </div>
-
-            <h3 className="mt-6 text-xl font-semibold text-slate-900">
-              {item.title}
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              {item.description}
+            <p className="mt-4 text-lg leading-8 text-slate-600">
+              The new layout uses light surfaces, blue accents, improved spacing,
+              and more polished text so the homepage feels professional and easy to trust.
             </p>
           </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {highlights.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="rounded-[28px] border border-blue-300 bg-gradient-to-br from-blue-100 via-white to-blue-200 p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
+                    <Icon className="h-6 w-6" />
+                  </div>
+
+                  <h3 className="mt-6 text-xl font-semibold text-slate-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {item.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       <SolutionsSection />
 
       <section className="px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-7xl rounded-[28px] border border-blue-100 bg-[radial-gradient(circle_at_top_left,_rgba(25,185,129,0.4),_transparent_28%),linear-gradient(155deg,_#06121f_0%,_#0f172a_48%,_#0b2745_100%)]  p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
+        <div className="mx-auto max-w-7xl rounded-[28px] border border-blue-100 bg-[radial-gradient(circle_at_top_left,_rgba(25,185,129,0.4),_transparent_28%),linear-gradient(155deg,_#06121f_0%,_#0f172a_48%,_#0b2745_100%)] p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
           <h2 className="text-4xl font-semibold tracking-tight">
             Talk to an expert.
           </h2>
@@ -440,4 +507,3 @@ export default function Home() {
     </div>
   );
 }
-
