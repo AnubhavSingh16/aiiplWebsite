@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
-import { productCatalog } from "../data/products";
+import { listProducts } from "../api/products";
 
 const sortOptions = [
   { label: "Featured first", value: "featured" },
@@ -22,12 +22,22 @@ const sortOptions = [
 ];
 
 export default function Products() {
+  const [productCatalog, setProductCatalog] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
   const { addToCart, cartItems, decreaseQuantity, totalItems } = useCart();
+
+  useEffect(() => {
+    listProducts()
+      .then(setProductCatalog)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
   const categories = [
     "All",
@@ -241,6 +251,16 @@ export default function Products() {
                 </div>
               </div>
 
+              {error && (
+                <div className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                  {error}
+                </div>
+              )}
+
+              {loading && (
+                <p className="mt-6 text-sm text-slate-500">Loading products...</p>
+              )}
+
               <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                 {filteredProducts.map((product) => {
                   const cartItem = cartItems.find(
@@ -403,7 +423,7 @@ export default function Products() {
                 })}
               </div>
 
-              {filteredProducts.length === 0 && (
+              {!loading && filteredProducts.length === 0 && (
                 <div className="mt-6 rounded-[32px] border border-dashed border-blue-200 bg-white px-6 py-14 text-center">
                   <div className="text-2xl font-semibold text-slate-900">
                     No products found

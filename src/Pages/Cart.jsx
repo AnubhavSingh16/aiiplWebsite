@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
+import { createEnquiry } from "../api/enquiries";
 
 const PROFILE_STORAGE_KEY = "userProfile";
 
@@ -53,7 +54,10 @@ export default function Cart() {
   const [checkoutForm, setCheckoutForm] = useState(emptyProfile);
   const [showAddressPrompt, setShowAddressPrompt] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [checkoutMessage, setCheckoutMessage] = useState("");
+  const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [sentEnquiry, setSentEnquiry] = useState(null);
 
   useEffect(() => {
     const profile = readSavedProfile();
@@ -92,25 +96,65 @@ export default function Cart() {
   }, [cartItems]);
 
   const handleProceedToCheckout = () => {
+    setSubmitError("");
+
     if (canUseSavedAddress) {
-      setCheckoutMessage("");
       setShowAddressPrompt(true);
       return;
     }
 
     setCheckoutForm(savedProfile);
-    setCheckoutMessage("");
+    setFormError("");
     setShowCheckoutModal(true);
   };
 
+  const submitEnquiry = async (profile) => {
+    setSubmitting(true);
+    setSubmitError("");
+
+    const items = cartItems.map((item) => ({
+      name: item.name,
+      category: item.category,
+      quantity: item.quantity,
+    }));
+
+    const message = items.length
+      ? `Enquiry for: ${items.map((item) => `${item.name} (x${item.quantity})`).join(", ")}`
+      : "Cart enquiry";
+
+    try {
+      await createEnquiry({
+        source: "cart",
+        name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        address: profile.address,
+        topic: "Cart enquiry",
+        message,
+        items,
+      });
+
+      localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+      setSavedProfile(profile);
+      setShowAddressPrompt(false);
+      setShowCheckoutModal(false);
+      setSentEnquiry({ profile, items });
+      clearCart();
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleUseSavedAddress = () => {
-    setShowAddressPrompt(false);
-    setCheckoutMessage("Saved profile selected for checkout.");
+    submitEnquiry(savedProfile);
   };
 
   const handleOpenCheckoutForm = () => {
     setShowAddressPrompt(false);
     setCheckoutForm(savedProfile);
+    setFormError("");
     setShowCheckoutModal(true);
   };
 
@@ -120,10 +164,13 @@ export default function Cart() {
   };
 
   const handleCheckoutSave = () => {
-    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(checkoutForm));
-    setSavedProfile(checkoutForm);
-    setShowCheckoutModal(false);
-    setCheckoutMessage("Checkout details saved and ready to use.");
+    if (!hasCheckoutDetails(checkoutForm)) {
+      setFormError("Please fill in name, phone, email, and address.");
+      return;
+    }
+
+    setFormError("");
+    submitEnquiry(checkoutForm);
   };
 
   return (
@@ -163,7 +210,51 @@ export default function Cart() {
             )}
           </div>
 
-          {cartItems.length === 0 ? (
+          {sentEnquiry ? (
+            <div className="mt-10 rounded-[28px] border border-emerald-200 bg-white px-6 py-16 text-center shadow-[0_18px_50px_rgba(15,23,42,0.04)]">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <h2 className="mt-5 text-2xl font-semibold text-slate-900">
+                Enquiry sent!
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-slate-600">
+                Thanks, {sentEnquiry.profile.name}. Our team will reach out to{" "}
+                {sentEnquiry.profile.email} shortly about:
+              </p>
+
+              {sentEnquiry.items.length > 0 && (
+                <div className="mx-auto mt-5 max-w-lg space-y-2 text-left">
+                  {sentEnquiry.items.map((item) => (
+                    <div
+                      key={item.name}
+                      className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm"
+                    >
+                      <span className="font-medium text-slate-900">{item.name}</span>
+                      <span className="text-slate-500">x{item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  to="/products"
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                  Browse more products
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setSentEnquiry(null)}
+                  className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-200 hover:text-blue-700"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="mt-10 rounded-[28px] border border-dashed border-blue-200 bg-white px-6 py-16 text-center shadow-[0_18px_50px_rgba(15,23,42,0.04)]">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                 <ShoppingCart className="h-7 w-7" />
@@ -358,19 +449,19 @@ export default function Cart() {
                   )}
                 </div>
 
-                {checkoutMessage && (
-                  <div className="mt-4 inline-flex w-full items-center gap-2 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-                    <CheckCircle2 className="h-4 w-4" />
-                    {checkoutMessage}
+                {submitError && (
+                  <div className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                    {submitError}
                   </div>
                 )}
 
                 <button
                   type="button"
                   onClick={handleProceedToCheckout}
-                  className="mt-6 w-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  disabled={submitting}
+                  className="mt-6 w-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
                 >
-                  Request enquiry
+                  {submitting ? "Sending enquiry..." : "Request enquiry"}
                 </button>
                 <Link
                   to="/products"
@@ -413,18 +504,26 @@ export default function Cart() {
               <div className="mt-2 leading-6">{savedProfile.address}</div>
             </div>
 
+            {submitError && (
+              <div className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                {submitError}
+              </div>
+            )}
+
             <div className="mt-6 flex flex-col gap-3">
               <button
                 type="button"
                 onClick={handleUseSavedAddress}
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                disabled={submitting}
+                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
               >
-                Continue with this user
+                {submitting ? "Sending..." : "Continue with this user"}
               </button>
               <button
                 type="button"
                 onClick={handleOpenCheckoutForm}
-                className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-200 hover:text-blue-700"
+                disabled={submitting}
+                className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-200 hover:text-blue-700 disabled:opacity-60"
               >
                 Use different user
               </button>
@@ -519,20 +618,28 @@ export default function Cart() {
               </label>
             </div>
 
+            {(formError || submitError) && (
+              <div className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                {formError || submitError}
+              </div>
+            )}
+
             <div className="mt-6 flex flex-col gap-3 md:flex-row md:justify-end">
               <button
                 type="button"
                 onClick={() => setShowCheckoutModal(false)}
-                className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-300"
+                disabled={submitting}
+                className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-300 disabled:opacity-60"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleCheckoutSave}
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                disabled={submitting}
+                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
               >
-                Save and continue
+                {submitting ? "Sending..." : "Save and send enquiry"}
               </button>
             </div>
           </div>

@@ -1,16 +1,48 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight, Check, ShoppingCart, Star } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
-import { productCatalog } from "../data/products";
+import { getProduct, listProducts } from "../api/products";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { addToCart, cartItems } = useCart();
 
-  const product = productCatalog.find((item) => String(item.id) === id);
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!product) {
+  useEffect(() => {
+    setLoading(true);
+    setNotFound(false);
+
+    getProduct(id)
+      .then(async (found) => {
+        setProduct(found);
+
+        const sameCategory = await listProducts({ category: found.category });
+        setRelatedProducts(
+          sameCategory.filter((item) => item.id !== found.id).slice(0, 4)
+        );
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        <Navbar />
+        <section className="px-6 pb-20 pt-32">
+          <p className="mx-auto max-w-4xl text-center text-slate-500">Loading...</p>
+        </section>
+      </div>
+    );
+  }
+
+  if (notFound || !product) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900">
         <Navbar />
@@ -34,9 +66,6 @@ export default function ProductDetails() {
   }
 
   const cartItem = cartItems.find((item) => item.id === product.id);
-  const relatedProducts = productCatalog
-    .filter((item) => item.id !== product.id && item.category === product.category)
-    .slice(0, 4);
 
   const highlights = [
     "Instant provisioning and guided onboarding",

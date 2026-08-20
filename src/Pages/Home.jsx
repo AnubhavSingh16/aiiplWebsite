@@ -13,11 +13,50 @@ import BestSellingProducts from "../components/BestSellingProducts";
 import PromoBanners from "../components/PromoBanners";
 import Navbar from "../components/Navbar";
 import SolutionsSection from "../components/Solutions";
-import { productCatalog } from "../data/products";
+import { listProducts } from "../api/products";
+
+const HERO_SLIDE_COPY = [
+  {
+    productName: "Dedicated Server X",
+    eyebrow: "Built for heavy-duty server workloads",
+    title: "Dedicated servers that stay fast under serious demand.",
+    description:
+      "From enterprise apps to traffic-heavy platforms, our server range is designed for stable performance, stronger uptime, and room to scale without friction.",
+  },
+  {
+    productName: "Cloud VPS Pro",
+    eyebrow: "Flexible hosting for growing teams",
+    title: "Cloud VPS solutions that launch quickly and grow cleanly.",
+    description:
+      "Choose hosting products that make deployment simpler, keep applications responsive, and give your business a solid foundation from day one.",
+  },
+  {
+    productName: "AI Compute Cluster",
+    eyebrow: "AI and compute-focused infrastructure",
+    title: "GPU-ready systems for training, inference, and advanced workloads.",
+    description:
+      "When your projects demand parallel compute and reliable throughput, our AI-ready product line helps researchers and builders move faster with confidence.",
+  },
+  {
+    productName: "Private Cloud Core",
+    eyebrow: "Private cloud with more control",
+    title: "Secure cloud platforms for teams that need privacy and stability.",
+    description:
+      "Our private cloud offerings are tailored for organizations that need dependable infrastructure, tighter control, and a cleaner long-term path to scale.",
+  },
+];
 
 export default function Home() {
+  const [productCatalog, setProductCatalog] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideDirection, setSlideDirection] = useState("next");
+
+  useEffect(() => {
+    listProducts()
+      .then(setProductCatalog)
+      .finally(() => setLoading(false));
+  }, []);
 
   const highlights = [
     {
@@ -45,36 +84,10 @@ export default function Home() {
     rating: product.rating.toFixed(1),
   }));
 
-  const heroSlides = [
-    {
-      product: productCatalog[1],
-      eyebrow: "Built for heavy-duty server workloads",
-      title: "Dedicated servers that stay fast under serious demand.",
-      description:
-        "From enterprise apps to traffic-heavy platforms, our server range is designed for stable performance, stronger uptime, and room to scale without friction.",
-    },
-    {
-      product: productCatalog[0],
-      eyebrow: "Flexible hosting for growing teams",
-      title: "Cloud VPS solutions that launch quickly and grow cleanly.",
-      description:
-        "Choose hosting products that make deployment simpler, keep applications responsive, and give your business a solid foundation from day one.",
-    },
-    {
-      product: productCatalog[5],
-      eyebrow: "AI and compute-focused infrastructure",
-      title: "GPU-ready systems for training, inference, and advanced workloads.",
-      description:
-        "When your projects demand parallel compute and reliable throughput, our AI-ready product line helps researchers and builders move faster with confidence.",
-    },
-    {
-      product: productCatalog[11],
-      eyebrow: "Private cloud with more control",
-      title: "Secure cloud platforms for teams that need privacy and stability.",
-      description:
-        "Our private cloud offerings are tailored for organizations that need dependable infrastructure, tighter control, and a cleaner long-term path to scale.",
-    },
-  ];
+  const heroSlides = HERO_SLIDE_COPY.map((slide) => ({
+    ...slide,
+    product: productCatalog.find((item) => item.name === slide.productName),
+  })).filter((slide) => slide.product);
 
   const activeSlide = heroSlides[currentSlide];
   const heroAccent = "from-slate-950 via-slate-800 to-sky-700";
@@ -85,6 +98,10 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (heroSlides.length === 0) {
+      return;
+    }
+
     const intervalId = window.setInterval(() => {
       setSlideDirection("next");
       setCurrentSlide((current) => (current + 1) % heroSlides.length);
@@ -106,6 +123,17 @@ export default function Home() {
       themeClass: "bg-gradient-to-br from-blue-700 via-blue-600 to-sky-500",
     },
   ];
+
+  if (loading || heroSlides.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#f8fbff] text-slate-900">
+        <Navbar />
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-slate-500">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f8fbff] text-slate-900">

@@ -1,8 +1,49 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { createEnquiry } from "../api/enquiries";
+
+const emptyForm = {
+  name: "",
+  email: "",
+  phone: "",
+  topic: "General enquiry",
+  message: "",
+};
 
 export default function Contact() {
+  const [formValues, setFormValues] = useState(emptyForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const updateField = (field, value) => {
+    setFormValues((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!formValues.name.trim() || !formValues.email.trim() || !formValues.message.trim()) {
+      setError("Name, email, and message are required.");
+      return;
+    }
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      await createEnquiry({ ...formValues, source: "contact" });
+      setFormValues(emptyForm);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const contactCards = [
     {
       icon: Mail,
@@ -105,12 +146,14 @@ export default function Contact() {
                 </div>
               </div>
 
-              <form className="mt-8 grid gap-5">
+              <form onSubmit={handleSubmit} className="mt-8 grid gap-5">
                 <div className="grid gap-5 md:grid-cols-2">
                   <label className="block">
                     <span className="text-sm font-medium text-slate-700">Full name</span>
                     <input
                       type="text"
+                      value={formValues.name}
+                      onChange={(event) => updateField("name", event.target.value)}
                       placeholder="Your name"
                       className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white"
                     />
@@ -120,6 +163,8 @@ export default function Contact() {
                     <span className="text-sm font-medium text-slate-700">Email</span>
                     <input
                       type="email"
+                      value={formValues.email}
+                      onChange={(event) => updateField("email", event.target.value)}
                       placeholder="you@example.com"
                       className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white"
                     />
@@ -131,6 +176,8 @@ export default function Contact() {
                     <span className="text-sm font-medium text-slate-700">Phone</span>
                     <input
                       type="text"
+                      value={formValues.phone}
+                      onChange={(event) => updateField("phone", event.target.value)}
                       placeholder="Optional"
                       className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white"
                     />
@@ -138,7 +185,11 @@ export default function Contact() {
 
                   <label className="block">
                     <span className="text-sm font-medium text-slate-700">Topic</span>
-                    <select className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white">
+                    <select
+                      value={formValues.topic}
+                      onChange={(event) => updateField("topic", event.target.value)}
+                      className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white"
+                    >
                       <option>General enquiry</option>
                       <option>Products</option>
                       <option>Custom PC build</option>
@@ -151,17 +202,32 @@ export default function Contact() {
                   <span className="text-sm font-medium text-slate-700">Message</span>
                   <textarea
                     rows="6"
+                    value={formValues.message}
+                    onChange={(event) => updateField("message", event.target.value)}
                     placeholder="Tell us a little about what you need..."
                     className="mt-2 w-full rounded-[24px] border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-7 text-slate-800 outline-none transition focus:border-blue-300 focus:bg-white"
                   />
                 </label>
 
+                {error && (
+                  <div className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                    {error}
+                  </div>
+                )}
+
+                {submitted && (
+                  <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                    Thanks! Your message has been sent — we'll get back to you soon.
+                  </div>
+                )}
+
                 <div className="flex flex-wrap items-center gap-4">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700"
+                    disabled={submitting}
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:opacity-60"
                   >
-                    Send Message
+                    {submitting ? "Sending..." : "Send Message"}
                     <ArrowRight className="h-4 w-4" />
                   </button>
                   <Link
