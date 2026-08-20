@@ -4,6 +4,8 @@ import { ArrowRight, Check, ShoppingCart, Star } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { getProduct, listProducts } from "../api/products";
+import Skeleton from "../components/Skeleton";
+import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -34,9 +36,61 @@ export default function ProductDetails() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900">
+        <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
+          <div className="mx-auto h-[420px] max-w-7xl rounded-b-[56px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.24),_transparent_36%),radial-gradient(circle_at_top_right,_rgba(14,165,233,0.18),_transparent_30%),linear-gradient(180deg,_#ffffff_0%,_#eff6ff_55%,_#f8fafc_100%)]" />
+        </div>
+
         <Navbar />
-        <section className="px-6 pb-20 pt-32">
-          <p className="mx-auto max-w-4xl text-center text-slate-500">Loading...</p>
+
+        <section className="px-6 pb-16 pt-32">
+          <div className="mx-auto max-w-7xl">
+            <Skeleton className="h-4 w-36" />
+
+            <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px]">
+              <div className="overflow-hidden rounded-[26px] border border-slate-200 bg-white p-1 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+                <Skeleton className="h-[420px] w-full rounded-[22px]" />
+              </div>
+
+              <div className="rounded-[26px] border border-blue-100 bg-white p-7 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+                <Skeleton className="h-3.5 w-32" />
+                <Skeleton className="mt-4 h-9 w-full" />
+                <Skeleton className="mt-2 h-9 w-2/3" />
+
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <Skeleton className="h-7 w-28 rounded-full" />
+                  <Skeleton className="h-7 w-32 rounded-full" />
+                </div>
+
+                <div className="mt-6 space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  {[0, 1, 2].map((item) => (
+                    <Skeleton key={item} className="h-4 w-3/4" />
+                  ))}
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Skeleton className="h-12 w-40 rounded-full" />
+                  <Skeleton className="h-12 w-32 rounded-full" />
+                </div>
+              </div>
+            </div>
+
+            <section className="mt-16">
+              <Skeleton className="h-3.5 w-40" />
+              <Skeleton className="mt-3 h-8 w-80" />
+
+              <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} variant="grid" />
+                ))}
+              </div>
+            </section>
+          </div>
         </section>
       </div>
     );

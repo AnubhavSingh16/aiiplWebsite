@@ -6,6 +6,8 @@ import {
   deleteCategory,
   listCategories,
 } from "../../api/categories";
+import PageLoader from "../../components/PageLoader";
+import Spinner from "../../components/Spinner";
 
 export default function AdminCategories() {
   const { token } = useAuth();
@@ -13,6 +15,8 @@ export default function AdminCategories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     listCategories()
@@ -29,6 +33,7 @@ export default function AdminCategories() {
       return;
     }
 
+    setSubmitting(true);
     try {
       const category = await createCategory(name, token);
       setCategories((current) =>
@@ -38,15 +43,20 @@ export default function AdminCategories() {
       setError("");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleDelete = async (id) => {
+    setDeletingId(id);
     try {
       await deleteCategory(id, token);
       setCategories((current) => current.filter((category) => category._id !== id));
     } catch (err) {
       setError(err.message);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -68,13 +78,15 @@ export default function AdminCategories() {
           value={newCategoryName}
           onChange={(event) => setNewCategoryName(event.target.value)}
           placeholder="New category name"
-          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300"
+          disabled={submitting}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-300 disabled:opacity-60"
         />
         <button
           type="submit"
-          className="inline-flex h-11 flex-none items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700"
+          disabled={submitting}
+          className="inline-flex h-11 flex-none items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
         >
-          <Plus className="h-4 w-4" />
+          {submitting ? <Spinner className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
           Add
         </button>
       </form>
@@ -86,7 +98,7 @@ export default function AdminCategories() {
       )}
 
       {loading ? (
-        <p className="mt-6 text-sm text-slate-500">Loading...</p>
+        <PageLoader />
       ) : (
         <div className="mt-6 max-w-md overflow-hidden rounded-[24px] border border-blue-100 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]">
           {categories.length === 0 ? (
@@ -108,10 +120,15 @@ export default function AdminCategories() {
                 <button
                   type="button"
                   onClick={() => handleDelete(category._id)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-600"
+                  disabled={deletingId === category._id}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-600 disabled:opacity-60"
                   aria-label={`Delete ${category.name}`}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  {deletingId === category._id ? (
+                    <Spinner className="h-4 w-4" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             ))

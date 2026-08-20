@@ -13,6 +13,7 @@ import BestSellingProducts from "../components/BestSellingProducts";
 import PromoBanners from "../components/PromoBanners";
 import Navbar from "../components/Navbar";
 import SolutionsSection from "../components/Solutions";
+import HeroSkeleton from "../components/skeletons/HeroSkeleton";
 import { listProducts } from "../api/products";
 
 const HERO_SLIDE_COPY = [
@@ -110,6 +111,8 @@ export default function Home() {
     return () => window.clearInterval(intervalId);
   }, [heroSlides.length]);
 
+  const showHeroSkeleton = loading || heroSlides.length === 0;
+
   const promoBanners = [
     {
       id: 1,
@@ -123,17 +126,6 @@ export default function Home() {
       themeClass: "bg-gradient-to-br from-blue-700 via-blue-600 to-sky-500",
     },
   ];
-
-  if (loading || heroSlides.length === 0) {
-    return (
-      <div className="min-h-screen bg-[#f8fbff] text-slate-900">
-        <Navbar />
-        <div className="flex min-h-screen items-center justify-center">
-          <p className="text-slate-500">Loading...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#f8fbff] text-slate-900">
@@ -201,6 +193,9 @@ export default function Home() {
       <Navbar />
 
       <section className="px-0 pb-20 pt-24 ">
+        {showHeroSkeleton ? (
+          <HeroSkeleton />
+        ) : (
         <div className="overflow-hidden  lg:min-h-screen">
           <div className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-[1600px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
             <div className="relative overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
@@ -384,6 +379,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        )}
       </section>
 
       <BestSellingProducts
@@ -392,6 +388,7 @@ export default function Home() {
         description="A reusable product section styled like modern e-commerce cards. Just change the heading and product array wherever you want to use it."
         ctaLabel="Browse catalog"
         products={bestSellingProducts}
+        loading={loading}
       />
 
       <BestSellingProducts
@@ -400,6 +397,7 @@ export default function Home() {
         description="Explore our most popular server solutions, trusted by businesses for performance and reliability. These top-rated products are designed to meet the needs of modern digital platforms."
         ctaLabel="Browse catalog"
         products={bestSellingProducts}
+        loading={loading}
       />
 
       <section className="px-6 pb-20">

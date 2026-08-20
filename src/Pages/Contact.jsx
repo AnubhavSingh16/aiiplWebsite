@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { createEnquiry } from "../api/enquiries";
+import Spinner from "../components/Spinner";
 
 const emptyForm = {
   name: "",
@@ -228,7 +229,11 @@ export default function Contact() {
                     className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:opacity-60"
                   >
                     {submitting ? "Sending..." : "Send Message"}
-                    <ArrowRight className="h-4 w-4" />
+                    {submitting ? (
+                      <Spinner />
+                    ) : (
+                      <ArrowRight className="h-4 w-4" />
+                    )}
                   </button>
                   <Link
                     to="/products"

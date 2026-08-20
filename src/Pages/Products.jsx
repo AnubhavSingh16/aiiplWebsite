@@ -15,6 +15,7 @@ import {
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { listProducts } from "../api/products";
+import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
 
 const sortOptions = [
   { label: "Featured first", value: "featured" },
@@ -257,12 +258,12 @@ export default function Products() {
                 </div>
               )}
 
-              {loading && (
-                <p className="mt-6 text-sm text-slate-500">Loading products...</p>
-              )}
-
               <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                {filteredProducts.map((product) => {
+                {loading &&
+                  Array.from({ length: 8 }).map((_, index) => (
+                    <ProductCardSkeleton key={index} variant="grid" />
+                  ))}
+                {!loading && filteredProducts.map((product) => {
                   const cartItem = cartItems.find(
                     (item) => item.id === product.id,
                   );

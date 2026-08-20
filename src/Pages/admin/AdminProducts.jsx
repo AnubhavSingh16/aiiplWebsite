@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { deleteProduct as deleteProductApi, listProducts } from "../../api/products";
+import PageLoader from "../../components/PageLoader";
+import Spinner from "../../components/Spinner";
 
 export default function AdminProducts() {
   const { token } = useAuth();
@@ -12,6 +14,7 @@ export default function AdminProducts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     listProducts()
@@ -33,12 +36,14 @@ export default function AdminProducts() {
   });
 
   const handleDelete = async (id) => {
+    setDeletingId(id);
     try {
       await deleteProductApi(id, token);
       setProducts((current) => current.filter((product) => product._id !== id));
     } catch (err) {
       setError(err.message);
     } finally {
+      setDeletingId(null);
       setPendingDeleteId(null);
     }
   };
@@ -105,7 +110,7 @@ export default function AdminProducts() {
       )}
 
       {loading ? (
-        <p className="mt-6 text-sm text-slate-500">Loading...</p>
+        <PageLoader label="Loading products..." />
       ) : (
       <div className="mt-6 overflow-hidden rounded-[24px] border border-blue-100 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.05)]">
         <div className="overflow-x-auto">
@@ -174,14 +179,17 @@ export default function AdminProducts() {
                           <button
                             type="button"
                             onClick={() => handleDelete(product._id)}
-                            className="rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white"
+                            disabled={deletingId === product._id}
+                            className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
                           >
+                            {deletingId === product._id && <Spinner className="h-3.5 w-3.5" />}
                             Confirm
                           </button>
                           <button
                             type="button"
                             onClick={() => setPendingDeleteId(null)}
-                            className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600"
+                            disabled={deletingId === product._id}
+                            className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 disabled:opacity-60"
                           >
                             Cancel
                           </button>

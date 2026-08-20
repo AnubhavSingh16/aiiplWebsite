@@ -8,6 +8,8 @@ import {
   getProduct,
   updateProduct,
 } from "../../api/products";
+import Spinner from "../../components/Spinner";
+import PageLoader from "../../components/PageLoader";
 
 const emptyProduct = {
   name: "",
@@ -37,6 +39,7 @@ export default function AdminProductForm() {
   const [addingCategory, setAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [categoryError, setCategoryError] = useState("");
+  const [savingCategory, setSavingCategory] = useState(false);
 
   useEffect(() => {
     listCategories()
@@ -62,6 +65,7 @@ export default function AdminProductForm() {
       return;
     }
 
+    setSavingCategory(true);
     try {
       const category = await createCategory(name, token);
       setCategories((current) => [...current, category].sort((a, b) => a.name.localeCompare(b.name)));
@@ -71,6 +75,8 @@ export default function AdminProductForm() {
       setCategoryError("");
     } catch (err) {
       setCategoryError(err.message);
+    } finally {
+      setSavingCategory(false);
     }
   };
 
@@ -110,7 +116,7 @@ export default function AdminProductForm() {
   };
 
   if (loading) {
-    return <p className="text-sm text-slate-500">Loading...</p>;
+    return <PageLoader label="Loading product..." />;
   }
 
   return (
@@ -164,10 +170,11 @@ export default function AdminProductForm() {
                 <button
                   type="button"
                   onClick={handleAddCategory}
-                  className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-700"
+                  disabled={savingCategory}
+                  className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-700 disabled:opacity-60"
                   aria-label="Save category"
                 >
-                  <Plus className="h-4 w-4" />
+                  {savingCategory ? <Spinner className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                 </button>
                 <button
                   type="button"
@@ -176,7 +183,8 @@ export default function AdminProductForm() {
                     setNewCategoryName("");
                     setCategoryError("");
                   }}
-                  className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-red-200 hover:text-red-600"
+                  disabled={savingCategory}
+                  className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-red-200 hover:text-red-600 disabled:opacity-60"
                   aria-label="Cancel"
                 >
                   <X className="h-4 w-4" />
@@ -314,7 +322,7 @@ export default function AdminProductForm() {
             disabled={submitting}
             className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:opacity-60"
           >
-            <Save className="h-4 w-4" />
+            {submitting ? <Spinner /> : <Save className="h-4 w-4" />}
             {submitting ? "Saving..." : isEditing ? "Save changes" : "Create product"}
           </button>
           <Link

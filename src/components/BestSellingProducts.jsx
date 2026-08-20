@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import ProductCardSkeleton from "./skeletons/ProductCardSkeleton";
 
 export default function BestSellingProducts({
   eyebrow = "Best Sellers",
@@ -9,6 +10,7 @@ export default function BestSellingProducts({
   description = "Browse featured products in a reusable e-commerce style section.",
   ctaLabel = "View all products",
   products = [],
+  loading = false,
 }) {
   const { addToCart, cartItems, decreaseQuantity } = useCart();
 
@@ -37,7 +39,11 @@ export default function BestSellingProducts({
 
         <div className="-mx-6 mt-10 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:overflow-visible md:px-0">
           <div className="flex gap-4 md:grid md:gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {products.map((product) => {
+            {loading &&
+              Array.from({ length: 4 }).map((_, index) => (
+                <ProductCardSkeleton key={index} variant="wide" />
+              ))}
+            {!loading && products.map((product) => {
               const cartItem = cartItems.find(
                 (item) => item.id === product.id && !item.buildGroupId,
               );

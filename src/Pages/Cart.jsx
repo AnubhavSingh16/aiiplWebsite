@@ -16,6 +16,7 @@ import {
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { createEnquiry } from "../api/enquiries";
+import Spinner from "../components/Spinner";
 
 const PROFILE_STORAGE_KEY = "userProfile";
 
@@ -459,8 +460,9 @@ export default function Cart() {
                   type="button"
                   onClick={handleProceedToCheckout}
                   disabled={submitting}
-                  className="mt-6 w-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
                 >
+                  {submitting && <Spinner />}
                   {submitting ? "Sending enquiry..." : "Request enquiry"}
                 </button>
                 <Link
@@ -515,8 +517,9 @@ export default function Cart() {
                 type="button"
                 onClick={handleUseSavedAddress}
                 disabled={submitting}
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
               >
+                {submitting && <Spinner />}
                 {submitting ? "Sending..." : "Continue with this user"}
               </button>
               <button
@@ -637,8 +640,9 @@ export default function Cart() {
                 type="button"
                 onClick={handleCheckoutSave}
                 disabled={submitting}
-                className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
               >
+                {submitting && <Spinner />}
                 {submitting ? "Sending..." : "Save and send enquiry"}
               </button>
             </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Mail, MapPin, MessageSquare, Package, Phone } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { listEnquiries } from "../../api/enquiries";
+import PageLoader from "../../components/PageLoader";
 
 const TABS = [
   { key: "contact", label: "Contact Messages", icon: MessageSquare },
@@ -73,7 +74,7 @@ export default function AdminEnquiries() {
       )}
 
       {loading ? (
-        <p className="mt-6 text-sm text-slate-500">Loading...</p>
+        <PageLoader />
       ) : visible.length === 0 ? (
         <div className="mt-6 rounded-[24px] border border-dashed border-blue-200 bg-white px-6 py-14 text-center">
           <div className="text-lg font-semibold text-slate-900">

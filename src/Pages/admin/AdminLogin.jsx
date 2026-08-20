@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Lock, LogIn, Server } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import Spinner from "../../components/Spinner";
 
 export default function AdminLogin() {
   const { isAuthenticated, login } = useAuth();
@@ -91,7 +92,7 @@ export default function AdminLogin() {
             disabled={submitting}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-slate-950 via-slate-800 to-sky-700 px-6 py-3.5 font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.16)] transition hover:scale-[1.01] disabled:opacity-60"
           >
-            <LogIn className="h-4 w-4" />
+            {submitting ? <Spinner /> : <LogIn className="h-4 w-4" />}
             {submitting ? "Signing in..." : "Sign in"}
           </button>
         </form>

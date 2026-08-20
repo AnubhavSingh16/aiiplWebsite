@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Package, Sparkles, XCircle } from "lucide-react";
 import { listProducts } from "../../api/products";
+import PageLoader from "../../components/PageLoader";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
@@ -58,7 +59,7 @@ export default function AdminDashboard() {
       )}
 
       {loading ? (
-        <p className="mt-8 text-sm text-slate-500">Loading...</p>
+        <PageLoader className="mt-8" />
       ) : (
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
