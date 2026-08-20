@@ -78,7 +78,7 @@ export default function Contact() {
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-medium text-blue-700 shadow-sm">
-              Contact AIPL
+              Contact AIIPL
             </div>
             <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
               Let&apos;s talk about your next infrastructure project.

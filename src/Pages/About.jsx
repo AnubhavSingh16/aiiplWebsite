@@ -96,7 +96,7 @@ export default function About() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/90 px-4 py-2 text-sm font-medium text-orange-700 shadow-sm">
                 <Sparkles className="h-4 w-4" />
-                About AIPL
+                About AIIPL
               </div>
               <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
                 A technology company built around quality, service, and momentum.

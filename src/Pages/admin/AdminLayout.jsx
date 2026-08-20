@@ -35,7 +35,7 @@ export default function AdminLayout() {
             </div>
             <div>
               <div className="text-base font-semibold tracking-tight text-slate-900">
-                AIPL Admin
+                AIIPL Admin
               </div>
               <div className="text-xs text-slate-500">Product dashboard</div>
             </div>

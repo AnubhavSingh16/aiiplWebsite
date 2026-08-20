@@ -48,7 +48,7 @@ export default function Navbar() {
             <Server className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-lg font-semibold tracking-tight text-slate-900">AIPL</div>
+            <div className="text-lg font-semibold tracking-tight text-slate-900">AIIPL</div>
             <div className="text-xs text-slate-500">Modern Infrastructure Solutions</div>
           </div>
         </Link>

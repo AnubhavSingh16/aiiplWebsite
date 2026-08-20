@@ -16,7 +16,7 @@ export default function Footer() {
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white">
                 <Server size={18} />
               </div>
-              <span className="font-semibold text-slate-800 text-lg">AIPL</span>
+              <span className="font-semibold text-slate-800 text-lg">AIIPL</span>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed">
               Modern infrastructure solutions designed to scale your business
@@ -61,7 +61,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-          <p>© {new Date().getFullYear()} AIPL. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AIIPL. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="hover:text-teal-600 transition">
               Privacy Policy
