@@ -15,6 +15,7 @@ import Navbar from "../components/Navbar";
 import SolutionsSection from "../components/Solutions";
 import HeroSkeleton from "../components/skeletons/HeroSkeleton";
 import { listProducts } from "../api/products";
+import { listBanners } from "../api/banners";
 
 const HERO_SLIDE_COPY = [
   {
@@ -49,13 +50,17 @@ const HERO_SLIDE_COPY = [
 
 export default function Home() {
   const [productCatalog, setProductCatalog] = useState([]);
+  const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideDirection, setSlideDirection] = useState("next");
 
   useEffect(() => {
-    listProducts()
-      .then(setProductCatalog)
+    Promise.all([listProducts(), listBanners()])
+      .then(([productData, bannerData]) => {
+        setProductCatalog(productData);
+        setBanners(bannerData.filter((banner) => banner.active));
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -113,19 +118,7 @@ export default function Home() {
 
   const showHeroSkeleton = loading || heroSlides.length === 0;
 
-  const promoBanners = [
-    {
-      id: 1,
-      label: "Limited Offer",
-      title: "Save more on premium cloud hosting plans",
-      description:
-        "Launch faster with business-ready hosting packages built for speed, uptime, and easy scaling.",
-      buttonLabel: "See plans",
-      image:
-        "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
-      themeClass: "bg-gradient-to-br from-blue-700 via-blue-600 to-sky-500",
-    },
-  ];
+  const promoBanners = banners.map((banner) => ({ ...banner, id: banner._id }));
 
   return (
     <div className="min-h-screen bg-[#f8fbff] text-slate-900">
@@ -454,12 +447,14 @@ export default function Home() {
         </div>
       </section>
 
-      <PromoBanners
-        eyebrow="Special Highlights"
-        title="Dynamic promotional banners"
-        description="This banner section is reusable too. You can change the heading and pass any banner items you want to feature."
-        banners={promoBanners}
-      />
+      {promoBanners.length > 0 && (
+        <PromoBanners
+          eyebrow="Special Highlights"
+          title="Dynamic promotional banners"
+          description="This banner section is reusable too. You can change the heading and pass any banner items you want to feature."
+          banners={promoBanners}
+        />
+      )}
 
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">

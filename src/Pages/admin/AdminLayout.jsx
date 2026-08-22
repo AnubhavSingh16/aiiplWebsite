@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
+  Image,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -11,9 +12,11 @@ import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
   { name: "Dashboard", link: "/admin", icon: LayoutDashboard, end: true },
+    { name: "Enquiries", link: "/admin/enquiries", icon: Mail },
+
   { name: "Products", link: "/admin/products", icon: Package },
   { name: "Categories", link: "/admin/categories", icon: Tag },
-  { name: "Enquiries", link: "/admin/enquiries", icon: Mail },
+  { name: "Banners", link: "/admin/banners", icon: Image },
 ];
 
 export default function AdminLayout() {

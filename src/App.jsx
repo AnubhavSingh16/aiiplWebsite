@@ -25,6 +25,8 @@ import AdminProducts from "./Pages/admin/AdminProducts";
 import AdminProductForm from "./Pages/admin/AdminProductForm";
 import AdminCategories from "./Pages/admin/AdminCategories";
 import AdminEnquiries from "./Pages/admin/AdminEnquiries";
+import AdminBanners from "./Pages/admin/AdminBanners";
+import AdminBannerForm from "./Pages/admin/AdminBannerForm";
 
 function SiteFooter() {
   const { pathname } = useLocation();
@@ -70,6 +72,9 @@ function App() {
                     element={<AdminProductForm />}
                   />
                   <Route path="categories" element={<AdminCategories />} />
+                  <Route path="banners" element={<AdminBanners />} />
+                  <Route path="banners/new" element={<AdminBannerForm />} />
+                  <Route path="banners/:id/edit" element={<AdminBannerForm />} />
                   <Route path="enquiries" element={<AdminEnquiries />} />
                 </Route>
               </Routes>
