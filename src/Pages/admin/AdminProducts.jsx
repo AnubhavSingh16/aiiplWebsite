@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
+import { ChevronDown, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { listCategories } from "../../api/categories";
 import { deleteProduct as deleteProductApi, listProducts } from "../../api/products";
 import PageLoader from "../../components/PageLoader";
 import Spinner from "../../components/Spinner";
@@ -9,6 +10,7 @@ import Spinner from "../../components/Spinner";
 export default function AdminProducts() {
   const { token } = useAuth();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,13 +19,16 @@ export default function AdminProducts() {
   const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
-    listProducts()
-      .then(setProducts)
+    Promise.all([listProducts(), listCategories()])
+      .then(([productData, categoryData]) => {
+        setProducts(productData);
+        setCategories(categoryData);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  const categories = ["All", ...new Set(products.map((product) => product.category))];
+  const categoryOptions = ["All", ...categories.map((category) => category.name)];
 
   const filteredProducts = products.filter((product) => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -81,25 +86,19 @@ export default function AdminProducts() {
           />
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => {
-            const active = selectedCategory === category;
-
-            return (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setSelectedCategory(category)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                  active
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                    : "border border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-700"
-                }`}
-              >
+        <div className="relative flex-none">
+          <select
+            value={selectedCategory}
+            onChange={(event) => setSelectedCategory(event.target.value)}
+            className="appearance-none rounded-full border border-slate-200 bg-white px-5 py-3 pr-11 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300"
+          >
+            {categoryOptions.map((category) => (
+              <option key={category} value={category}>
                 {category}
-              </button>
-            );
-          })}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         </div>
       </div>
 
