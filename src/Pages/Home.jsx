@@ -59,6 +59,9 @@ export default function Home() {
     Promise.all([listProducts(), listBanners()])
       .then(([productData, bannerData]) => {
         setProductCatalog(productData);
+        console.log("Fetched banners:", bannerData);
+        console.log("Fetched products:", productData);
+
         setBanners(bannerData.filter((banner) => banner.active));
       })
       .finally(() => setLoading(false));

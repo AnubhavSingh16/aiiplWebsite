@@ -15,6 +15,8 @@ import {
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { listProducts } from "../api/products";
+import { listTypes } from "../api/types";
+import { listSubtypes } from "../api/subtypes";
 import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
 
 const sortOptions = [
@@ -24,18 +26,26 @@ const sortOptions = [
 
 export default function Products() {
   const [productCatalog, setProductCatalog] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [subtypes, setSubtypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedType, setSelectedType] = useState("All");
+  const [selectedSubtype, setSelectedSubtype] = useState("All");
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
   const { addToCart, cartItems, decreaseQuantity, totalItems } = useCart();
 
   useEffect(() => {
-    listProducts()
-      .then(setProductCatalog)
+    Promise.all([listProducts(), listTypes(), listSubtypes()])
+      .then(([productData, typeData, subtypeData]) => {
+        setProductCatalog(productData);
+        setTypes(typeData);
+        setSubtypes(subtypeData);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
@@ -44,6 +54,39 @@ export default function Products() {
     "All",
     ...new Set(productCatalog.map((product) => product.category)),
   ];
+
+  const typeOptions =
+    selectedCategory === "All"
+      ? []
+      : types.filter((type) => type.category === selectedCategory).map((type) => type.name);
+
+  const subtypeOptions =
+    selectedType === "All"
+      ? []
+      : subtypes
+          .filter((subtype) => subtype.category === selectedCategory && subtype.type === selectedType)
+          .map((subtype) => subtype.name);
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    setSelectedType("All");
+    setSelectedSubtype("All");
+  };
+
+  const handleTypeChange = (value) => {
+    setSelectedType(value);
+    setSelectedSubtype("All");
+  };
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("All");
+    setSelectedType("All");
+    setSelectedSubtype("All");
+    setFeaturedOnly(false);
+    setInStockOnly(false);
+    setSortBy("featured");
+  };
 
   const filteredProducts = productCatalog
     .filter((product) => {
@@ -58,12 +101,19 @@ export default function Products() {
       const matchesCategory =
         selectedCategory === "All" || product.category === selectedCategory;
 
+      const matchesType = selectedType === "All" || product.type === selectedType;
+
+      const matchesSubtype =
+        selectedSubtype === "All" || product.badge === selectedSubtype;
+
       const matchesFeatured = !featuredOnly || product.featured;
       const matchesStock = !inStockOnly || product.inStock;
 
       return (
         matchesSearch &&
         matchesCategory &&
+        matchesType &&
+        matchesSubtype &&
         matchesFeatured &&
         matchesStock
       );
@@ -140,13 +190,7 @@ export default function Products() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setSelectedCategory("All");
-                    setFeaturedOnly(false);
-                    setInStockOnly(false);
-                    setSortBy("featured");
-                  }}
+                  onClick={resetFilters}
                   className="text-sm font-medium text-slate-500 transition hover:text-blue-700"
                 >
                   Reset
@@ -181,7 +225,7 @@ export default function Products() {
                       <button
                         key={category}
                         type="button"
-                        onClick={() => setSelectedCategory(category)}
+                        onClick={() => handleCategoryChange(category)}
                         className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                           active
                             ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
@@ -192,6 +236,50 @@ export default function Products() {
                       </button>
                     );
                   })}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <div className="text-sm font-semibold text-slate-900">Type</div>
+                <div className="relative mt-3">
+                  <select
+                    value={selectedType}
+                    onChange={(event) => handleTypeChange(event.target.value)}
+                    disabled={selectedCategory === "All" || typeOptions.length === 0}
+                    className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white disabled:opacity-60"
+                  >
+                    <option value="All">
+                      {selectedCategory === "All" ? "Select a category first" : "All types"}
+                    </option>
+                    {typeOptions.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <div className="text-sm font-semibold text-slate-900">Subtype</div>
+                <div className="relative mt-3">
+                  <select
+                    value={selectedSubtype}
+                    onChange={(event) => setSelectedSubtype(event.target.value)}
+                    disabled={selectedType === "All" || subtypeOptions.length === 0}
+                    className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white disabled:opacity-60"
+                  >
+                    <option value="All">
+                      {selectedType === "All" ? "Select a type first" : "All subtypes"}
+                    </option>
+                    {subtypeOptions.map((subtype) => (
+                      <option key={subtype} value={subtype}>
+                        {subtype}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 </div>
               </div>
 

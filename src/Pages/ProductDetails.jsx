@@ -120,12 +120,7 @@ export default function ProductDetails() {
   }
 
   const cartItem = cartItems.find((item) => item.id === product.id);
-
-  const highlights = [
-    "Instant provisioning and guided onboarding",
-    "Scalable plans for growing business workloads",
-    "Business-ready support with secure infrastructure",
-  ];
+  const highlights = product.points || [];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -188,16 +183,21 @@ export default function ProductDetails() {
                 and a more polished delivery experience from day one.
               </p>
 
-              <div className="mt-6 space-y-3">
-                {highlights.map((item) => (
-                  <div key={item} className="flex items-start gap-3 text-sm text-slate-600">
-                    <span className="mt-0.5 rounded-full bg-blue-50 p-1 text-blue-700">
-                      <Check className="h-3.5 w-3.5" />
-                    </span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
+              {highlights.length > 0 && (
+                <div className="mt-6 space-y-3">
+                  {highlights.map((item, index) => (
+                    <div
+                      key={`${item}-${index}`}
+                      className="flex items-start gap-3 text-sm text-slate-600"
+                    >
+                      <span className="mt-0.5 rounded-full bg-blue-50 p-1 text-blue-700">
+                        <Check className="h-3.5 w-3.5" />
+                      </span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <button
