@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -7,6 +7,7 @@ import {
   ShoppingCart,
   Check,
   ChevronDown,
+  LayoutGrid,
   Search,
   SlidersHorizontal,
   Sparkles,
@@ -25,6 +26,75 @@ const sortOptions = [
   { label: "Featured first", value: "featured" },
   { label: "Top rated", value: "rating" },
 ];
+
+// A custom dropdown (not a native <select>) so the open panel can get a
+// fixed-height, custom-styled scrollbar and a little open/close motion.
+function FancyDropdown({ options, value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="flex w-full items-center justify-between gap-2 rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-blue-300"
+      >
+        <span className="flex items-center gap-2.5">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-sky-400 text-white">
+            <LayoutGrid className="h-3.5 w-3.5" />
+          </span>
+          {value}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+            open ? "rotate-180 text-blue-600" : ""
+          }`}
+        />
+      </button>
+
+      {open && (
+        <div className="dropdown-pop absolute z-20 mt-2 w-full overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-xl shadow-blue-100/60">
+          <div className="fancy-scrollbar max-h-60 space-y-0.5 overflow-y-auto p-1.5">
+            {options.map((option) => {
+              const active = option === value;
+
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    onChange(option);
+                    setOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
+                    active
+                      ? "bg-gradient-to-r from-blue-50 to-sky-50 text-blue-700"
+                      : "text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {option}
+                  {active && <Check className="h-4 w-4 flex-none" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Products() {
   const [productCatalog, setProductCatalog] = useState([]);
@@ -147,6 +217,47 @@ export default function Products() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <style>
+        {`
+          @keyframes dropdownPop {
+            from {
+              opacity: 0;
+              transform: translateY(-6px) scale(0.98);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          .dropdown-pop {
+            animation: dropdownPop 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+
+          .fancy-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #93c5fd #eff6ff;
+          }
+
+          .fancy-scrollbar::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          .fancy-scrollbar::-webkit-scrollbar-track {
+            background: #eff6ff;
+            border-radius: 999px;
+          }
+
+          .fancy-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #60a5fa, #38bdf8);
+            border-radius: 999px;
+          }
+
+          .fancy-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #3b82f6, #0ea5e9);
+          }
+        `}
+      </style>
       <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
         <div className="mx-auto h-[460px] max-w-7xl rounded-b-[56px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_transparent_36%),radial-gradient(circle_at_top_right,_rgba(14,165,233,0.18),_transparent_30%),linear-gradient(180deg,_#ffffff_0%,_#eff6ff_55%,_#f8fafc_100%)]" />
       </div>
@@ -233,29 +344,16 @@ export default function Products() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
+                <div className="relative z-30 rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
                   <div className="text-sm font-semibold text-slate-900">
                     Category
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {categoryOptions.map((category) => {
-                      const active = selectedCategory === category;
-
-                      return (
-                        <button
-                          key={category}
-                          type="button"
-                          onClick={() => handleCategoryChange(category)}
-                          className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                            active
-                              ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                              : "border border-blue-100 bg-white/90 text-slate-600 hover:border-blue-300 hover:text-blue-700"
-                          }`}
-                        >
-                          {category}
-                        </button>
-                      );
-                    })}
+                  <div className="mt-3">
+                    <FancyDropdown
+                      options={categoryOptions}
+                      value={selectedCategory}
+                      onChange={handleCategoryChange}
+                    />
                   </div>
                 </div>
 

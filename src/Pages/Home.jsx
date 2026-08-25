@@ -394,7 +394,7 @@ export default function Home() {
 
           <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/70 p-6 shadow-[inset_0_0_40px_rgba(59,130,246,0.08)]">
             <div className="absolute inset-x-8 top-0 h-24 bg-gradient-to-b from-emerald-400/20 to-transparent blur-2xl" />
-            <div className="relative mx-auto max-w-[280px] rounded-[28px] border border-white/10 bg-slate-900 px-5 py-6">
+            <div className="relative mx-auto max-w-[280px] rounded-[28px] border border-white/50 bg-slate-900 px-5 py-6">
               <div className="h-2 overflow-hidden rounded-full bg-white/5">
                 <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500" />
               </div>
@@ -403,7 +403,7 @@ export default function Home() {
                   <div
                     key={item}
                     className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-4 py-3 text-sm text-slate-200 animate-pulse"
-                    style={{ animationDelay: `${index * 180}ms` }}
+                    style={{ animationDelay: `${index * 80}ms` }}
                   >
                     <span>{item}</span>
                     <Cpu className="h-4 w-4 text-emerald-300" />
