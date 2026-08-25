@@ -16,53 +16,22 @@ import SolutionsSection from "../components/Solutions";
 import HeroSkeleton from "../components/skeletons/HeroSkeleton";
 import { listProducts } from "../api/products";
 import { listBanners } from "../api/banners";
-
-const HERO_SLIDE_COPY = [
-  {
-    productName: "Dedicated Server X",
-    eyebrow: "Built for heavy-duty server workloads",
-    title: "Dedicated servers that stay fast under serious demand.",
-    description:
-      "From enterprise apps to traffic-heavy platforms, our server range is designed for stable performance, stronger uptime, and room to scale without friction.",
-  },
-  {
-    productName: "Cloud VPS Pro",
-    eyebrow: "Flexible hosting for growing teams",
-    title: "Cloud VPS solutions that launch quickly and grow cleanly.",
-    description:
-      "Choose hosting products that make deployment simpler, keep applications responsive, and give your business a solid foundation from day one.",
-  },
-  {
-    productName: "AI Compute Cluster",
-    eyebrow: "AI and compute-focused infrastructure",
-    title: "GPU-ready systems for training, inference, and advanced workloads.",
-    description:
-      "When your projects demand parallel compute and reliable throughput, our AI-ready product line helps researchers and builders move faster with confidence.",
-  },
-  {
-    productName: "Private Cloud Core",
-    eyebrow: "Private cloud with more control",
-    title: "Secure cloud platforms for teams that need privacy and stability.",
-    description:
-      "Our private cloud offerings are tailored for organizations that need dependable infrastructure, tighter control, and a cleaner long-term path to scale.",
-  },
-];
+import { listHeroSlides } from "../api/heroSlides";
 
 export default function Home() {
   const [productCatalog, setProductCatalog] = useState([]);
   const [banners, setBanners] = useState([]);
+  const [heroSlideRecords, setHeroSlideRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideDirection, setSlideDirection] = useState("next");
 
   useEffect(() => {
-    Promise.all([listProducts(), listBanners()])
-      .then(([productData, bannerData]) => {
+    Promise.all([listProducts(), listBanners(), listHeroSlides()])
+      .then(([productData, bannerData, heroSlideData]) => {
         setProductCatalog(productData);
-        console.log("Fetched banners:", bannerData);
-        console.log("Fetched products:", productData);
-
         setBanners(bannerData.filter((banner) => banner.active));
+        setHeroSlideRecords(heroSlideData.filter((slide) => slide.active));
       })
       .finally(() => setLoading(false));
   }, []);
@@ -93,10 +62,10 @@ export default function Home() {
     rating: product.rating.toFixed(1),
   }));
 
-  const heroSlides = HERO_SLIDE_COPY.map((slide) => ({
+  const heroSlides = heroSlideRecords.map((slide) => ({
     ...slide,
-    product: productCatalog.find((item) => item.name === slide.productName),
-  })).filter((slide) => slide.product);
+    id: slide._id,
+  }));
 
   const activeSlide = heroSlides[currentSlide];
   const heroAccent = "from-slate-950 via-slate-800 to-sky-700";
@@ -199,7 +168,7 @@ export default function Home() {
               {/* <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-slate-200/60 blur-3xl" /> */}
 
               <div
-                key={activeSlide.product.id}
+                key={activeSlide.id}
                 className="hero-copy-slide relative"
                 style={{
                   "--hero-copy-shift":
@@ -215,12 +184,6 @@ export default function Home() {
                 </div>
 
                 <div className="mt-6 min-h-[320px] lg:min-h-[380px]">
-                  <p
-                    data-hero-copy="meta"
-                    className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500"
-                  >
-                    {activeSlide.product.category} / {activeSlide.product.type}
-                  </p>
                   <h1
                     data-hero-copy="title"
                     className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-slate-950 md:text-5xl"
@@ -303,7 +266,7 @@ export default function Home() {
 
                     return (
                       <div
-                        key={slide.product.id}
+                        key={slide.id}
                         className={`absolute inset-0 transition-all duration-700 ${
                           isActive
                             ? "translate-x-0 opacity-100"
@@ -312,31 +275,33 @@ export default function Home() {
                               : "translate-x-8 opacity-0"
                         }`}
                       >
-                        <img
-                          src={slide.product.image}
-                          alt={slide.product.name}
-                          className="h-full w-full object-cover"
-                        />
+                        {slide.image ? (
+                          <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div
+                            className={`h-full w-full bg-gradient-to-br ${heroAccent}`}
+                          />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent" />
 
                         <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-5">
                           <div className="rounded-full border border-white/15 bg-slate-950/35 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur">
-                            {slide.product.category}
-                          </div>
-                          <div className={`rounded-full bg-gradient-to-r ${heroAccent} px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg`}>
-                            {slide.product.badge}
+                            {slide.eyebrow}
                           </div>
                         </div>
 
                         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-                          <div className="max-w-lg rounded-[28px] border border-white/12 bg-slate-950/45 p-5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] backdrop-blur-md">
-                            <div className="text-sm text-sky-100">{slide.product.type}</div>
-                            <div className="mt-2 text-3xl font-semibold">
-                              {slide.product.name}
+                          <div className="max-w-lg rounded-[28px] border border-white/40 bg-slate-600/10 p-5 text-white shadow-[0_18px_40px_rgba(15,43,42,0.50)] backdrop-blur-md">
+                            <div className="text-2xl font-semibold">
+                              {slide.title}
                             </div>
-                            <p className="mt-3 text-sm leading-7 text-slate-200">
-                              {slide.product.description}
-                            </p>
+                            {/* <p className="mt-3 text-sm leading-7 text-slate-200">
+                              {slide.description}
+                            </p> */}
                           </div>
                         </div>
                       </div>
@@ -348,7 +313,7 @@ export default function Home() {
                   <div className="flex items-center gap-2">
                     {heroSlides.map((slide, index) => (
                       <button
-                        key={slide.product.id}
+                        key={slide.id}
                         type="button"
                         onClick={() => {
                           if (index !== currentSlide) {

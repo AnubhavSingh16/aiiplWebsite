@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
+  GalleryHorizontal,
   Image,
   LayoutDashboard,
   LogOut,
@@ -12,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
   { name: "Dashboard", link: "/admin", icon: LayoutDashboard, end: true },
+  { name: "Hero Section", link: "/admin/hero-slides", icon: GalleryHorizontal },
     { name: "Enquiries", link: "/admin/enquiries", icon: Mail },
 
   { name: "Products", link: "/admin/products", icon: Package },

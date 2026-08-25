@@ -27,6 +27,8 @@ import AdminCategories from "./Pages/admin/AdminCategories";
 import AdminEnquiries from "./Pages/admin/AdminEnquiries";
 import AdminBanners from "./Pages/admin/AdminBanners";
 import AdminBannerForm from "./Pages/admin/AdminBannerForm";
+import AdminHeroSlides from "./Pages/admin/AdminHeroSlides";
+import AdminHeroSlideForm from "./Pages/admin/AdminHeroSlideForm";
 
 function SiteFooter() {
   const { pathname } = useLocation();
@@ -76,6 +78,9 @@ function App() {
                   <Route path="banners/new" element={<AdminBannerForm />} />
                   <Route path="banners/:id/edit" element={<AdminBannerForm />} />
                   <Route path="enquiries" element={<AdminEnquiries />} />
+                  <Route path="hero-slides" element={<AdminHeroSlides />} />
+                  <Route path="hero-slides/new" element={<AdminHeroSlideForm />} />
+                  <Route path="hero-slides/:id/edit" element={<AdminHeroSlideForm />} />
                 </Route>
               </Routes>
               <SiteFooter />
