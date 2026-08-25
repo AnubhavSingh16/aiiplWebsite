@@ -11,10 +11,12 @@ import {
   SlidersHorizontal,
   Sparkles,
   Star,
+  Tag,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { listProducts } from "../api/products";
+import { listCategories } from "../api/categories";
 import { listTypes } from "../api/types";
 import { listSubtypes } from "../api/subtypes";
 import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
@@ -26,6 +28,7 @@ const sortOptions = [
 
 export default function Products() {
   const [productCatalog, setProductCatalog] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
   const [subtypes, setSubtypes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,16 +36,17 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
-  const [selectedSubtype, setSelectedSubtype] = useState("All");
+  const [selectedSubtypes, setSelectedSubtypes] = useState([]);
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
   const { addToCart, cartItems, decreaseQuantity, totalItems } = useCart();
 
   useEffect(() => {
-    Promise.all([listProducts(), listTypes(), listSubtypes()])
-      .then(([productData, typeData, subtypeData]) => {
+    Promise.all([listProducts(), listCategories(), listTypes(), listSubtypes()])
+      .then(([productData, categoryData, typeData, subtypeData]) => {
         setProductCatalog(productData);
+        setCategories(categoryData);
         setTypes(typeData);
         setSubtypes(subtypeData);
       })
@@ -50,39 +54,54 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
-  const categories = [
-    "All",
-    ...new Set(productCatalog.map((product) => product.category)),
-  ];
+  const categoryOptions = ["All", ...categories.map((category) => category.name)];
 
-  const typeOptions =
+  const realTypeOptions =
     selectedCategory === "All"
       ? []
-      : types.filter((type) => type.category === selectedCategory).map((type) => type.name);
+      : [
+          ...new Set(
+            types.filter((type) => type.category === selectedCategory).map((type) => type.name)
+          ),
+        ];
+
+  const typeOptions = realTypeOptions.length > 0 ? ["All", ...realTypeOptions] : [];
 
   const subtypeOptions =
     selectedType === "All"
       ? []
-      : subtypes
-          .filter((subtype) => subtype.category === selectedCategory && subtype.type === selectedType)
-          .map((subtype) => subtype.name);
+      : [
+          ...new Set(
+            subtypes
+              .filter((subtype) => subtype.category === selectedCategory && subtype.type === selectedType)
+              .map((subtype) => subtype.name)
+          ),
+        ];
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
     setSelectedType("All");
-    setSelectedSubtype("All");
+    setSelectedSubtypes([]);
   };
 
   const handleTypeChange = (value) => {
     setSelectedType(value);
-    setSelectedSubtype("All");
+    setSelectedSubtypes([]);
+  };
+
+  const toggleSubtype = (subtype) => {
+    setSelectedSubtypes((current) =>
+      current.includes(subtype)
+        ? current.filter((item) => item !== subtype)
+        : [...current, subtype]
+    );
   };
 
   const resetFilters = () => {
     setSearchTerm("");
     setSelectedCategory("All");
     setSelectedType("All");
-    setSelectedSubtype("All");
+    setSelectedSubtypes([]);
     setFeaturedOnly(false);
     setInStockOnly(false);
     setSortBy("featured");
@@ -94,9 +113,9 @@ export default function Products() {
 
       const matchesSearch =
         !normalizedSearch ||
-        product.name.toLowerCase().includes(normalizedSearch) ||
-        product.category.toLowerCase().includes(normalizedSearch) ||
-        product.type.toLowerCase().includes(normalizedSearch);
+        product.name?.toLowerCase().includes(normalizedSearch) ||
+        product.category?.toLowerCase().includes(normalizedSearch) ||
+        product.type?.toLowerCase().includes(normalizedSearch);
 
       const matchesCategory =
         selectedCategory === "All" || product.category === selectedCategory;
@@ -104,7 +123,7 @@ export default function Products() {
       const matchesType = selectedType === "All" || product.type === selectedType;
 
       const matchesSubtype =
-        selectedSubtype === "All" || product.badge === selectedSubtype;
+        selectedSubtypes.length === 0 || selectedSubtypes.includes(product.badge);
 
       const matchesFeatured = !featuredOnly || product.featured;
       const matchesStock = !inStockOnly || product.inStock;
@@ -182,133 +201,160 @@ export default function Products() {
           </div>
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
-            <aside className="h-fit rounded-[32px] border border-blue-100 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <aside className="h-fit rounded-[32px] border border-blue-100 bg-gradient-to-b from-slate-800 to-blue-500 p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
               <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 text-slate-900">
-                  <SlidersHorizontal className="h-5 w-5 text-blue-700" />
+                <div className="flex items-center gap-2 text-blue-50">
+                  <SlidersHorizontal className="h-5 w-5 text-white " />
                   <h2 className="text-lg font-semibold">Filters</h2>
                 </div>
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="text-sm font-medium text-slate-500 transition hover:text-blue-700"
+                  className="text-sm font-medium text-blue-100 transition hover:text-white border-2 border-blue-100 rounded-full px-3 py-1 hover:bg-red-600/90"
                 >
                   Reset
                 </button>
               </div>
 
-              <div className="mt-6">
-                <label className="text-sm font-semibold text-slate-900">
-                  Search products
-                </label>
-                <div className="mt-3 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-blue-300 focus-within:bg-white">
-                  <Search className="h-4 w-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    placeholder="Search hosting, cloud, storage..."
-                    className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-                  />
+              <div className="mt-6 space-y-4">
+                <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
+                  <label className="text-sm font-semibold text-slate-900">
+                    Search products
+                  </label>
+                  <div className="mt-3 flex items-center gap-3 rounded-xl border border-blue-100 bg-white px-4 py-3 focus-within:border-blue-300">
+                    <Search className="h-4 w-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(event) => setSearchTerm(event.target.value)}
+                      placeholder="Search hosting, cloud, storage..."
+                      className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="mt-8">
-                <div className="text-sm font-semibold text-slate-900">
-                  Category
+                <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
+                  <div className="text-sm font-semibold text-slate-900">
+                    Category
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {categoryOptions.map((category) => {
+                      const active = selectedCategory === category;
+
+                      return (
+                        <button
+                          key={category}
+                          type="button"
+                          onClick={() => handleCategoryChange(category)}
+                          className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                            active
+                              ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                              : "border border-blue-100 bg-white/90 text-slate-600 hover:border-blue-300 hover:text-blue-700"
+                          }`}
+                        >
+                          {category}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {categories.map((category) => {
-                    const active = selectedCategory === category;
 
-                    return (
-                      <button
-                        key={category}
-                        type="button"
-                        onClick={() => handleCategoryChange(category)}
-                        className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                          active
-                            ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                            : "border border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-700"
-                        }`}
-                      >
-                        {category}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                {selectedCategory !== "All" && typeOptions.length > 0 && (
+                  <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
+                    <div className="text-sm font-semibold text-slate-900">Type</div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {typeOptions.map((type) => {
+                        const active = selectedType === type;
 
-              <div className="mt-6">
-                <div className="text-sm font-semibold text-slate-900">Type</div>
-                <div className="relative mt-3">
-                  <select
-                    value={selectedType}
-                    onChange={(event) => handleTypeChange(event.target.value)}
-                    disabled={selectedCategory === "All" || typeOptions.length === 0}
-                    className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white disabled:opacity-60"
+                        return (
+                          <button
+                            key={type}
+                            type="button"
+                            onClick={() => handleTypeChange(type)}
+                            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                              active
+                                ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                                : "border border-blue-100 bg-white/90 text-slate-600 hover:border-blue-300 hover:text-blue-700"
+                            }`}
+                          >
+                            {type}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {selectedType !== "All" && subtypeOptions.length > 0 && (
+                  <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-semibold text-slate-900">Subtype</div>
+                      {selectedSubtypes.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedSubtypes([])}
+                          className="text-xs font-medium text-slate-400 transition hover:text-blue-700"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="mt-3 max-h-56 space-y-1 overflow-y-auto rounded-xl border border-blue-100 bg-white p-2">
+                      {subtypeOptions.map((subtype) => {
+                        const checked = selectedSubtypes.includes(subtype);
+
+                        return (
+                          <label
+                            key={subtype}
+                            className={`flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                              checked
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggleSubtype(subtype)}
+                              className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-300"
+                            />
+                            <Tag className="h-3.5 w-3.5 flex-none text-slate-400" />
+                            {subtype}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div className="rounded-2xl border border-blue-100/70 bg-white/70 p-4 backdrop-blur-sm space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => setFeaturedOnly((value) => !value)}
+                    className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition ${
+                      featuredOnly
+                        ? "bg-slate-950 text-white"
+                        : "border border-blue-100 bg-white/90 text-slate-700 hover:border-blue-300"
+                    }`}
                   >
-                    <option value="All">
-                      {selectedCategory === "All" ? "Select a category first" : "All types"}
-                    </option>
-                    {typeOptions.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                </div>
-              </div>
+                    <span>Featured only</span>
+                    {featuredOnly && <Check className="h-4 w-4" />}
+                  </button>
 
-              <div className="mt-6">
-                <div className="text-sm font-semibold text-slate-900">Subtype</div>
-                <div className="relative mt-3">
-                  <select
-                    value={selectedSubtype}
-                    onChange={(event) => setSelectedSubtype(event.target.value)}
-                    disabled={selectedType === "All" || subtypeOptions.length === 0}
-                    className="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white disabled:opacity-60"
+                  <button
+                    type="button"
+                    onClick={() => setInStockOnly((value) => !value)}
+                    className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition ${
+                      inStockOnly
+                        ? "bg-slate-950 text-white"
+                        : "border border-blue-100 bg-white/90 text-slate-700 hover:border-blue-300"
+                    }`}
                   >
-                    <option value="All">
-                      {selectedType === "All" ? "Select a type first" : "All subtypes"}
-                    </option>
-                    {subtypeOptions.map((subtype) => (
-                      <option key={subtype} value={subtype}>
-                        {subtype}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <span>Available now</span>
+                    {inStockOnly && <Check className="h-4 w-4" />}
+                  </button>
                 </div>
-              </div>
-
-              <div className="mt-8 space-y-3">
-                <button
-                  type="button"
-                  onClick={() => setFeaturedOnly((value) => !value)}
-                  className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${
-                    featuredOnly
-                      ? "bg-slate-950 text-white"
-                      : "border border-slate-200 bg-white text-slate-700 hover:border-blue-200"
-                  }`}
-                >
-                  <span>Featured only</span>
-                  {featuredOnly && <Check className="h-4 w-4" />}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setInStockOnly((value) => !value)}
-                  className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${
-                    inStockOnly
-                      ? "bg-slate-950 text-white"
-                      : "border border-slate-200 bg-white text-slate-700 hover:border-blue-200"
-                  }`}
-                >
-                  <span>Available now</span>
-                  {inStockOnly && <Check className="h-4 w-4" />}
-                </button>
               </div>
             </aside>
 
@@ -515,11 +561,10 @@ export default function Products() {
               {!loading && filteredProducts.length === 0 && (
                 <div className="mt-6 rounded-[32px] border border-dashed border-blue-200 bg-white px-6 py-14 text-center">
                   <div className="text-2xl font-semibold text-slate-900">
-                    No products found
+                    No matching products
                   </div>
                   <p className="mx-auto mt-3 max-w-xl text-slate-600">
-                    Try clearing a few filters or searching with a broader
-                    keyword to explore more items from the catalog.
+                    We couldn’t find any products matching your selection. Try removing a few filters or using a different search.
                   </p>
                 </div>
               )}
