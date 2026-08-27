@@ -45,10 +45,14 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-sky-400 text-white shadow-lg shadow-blue-200">
-            <Server className="h-5 w-5" />
-          </div>
+  <img
+    src="/aiipl-logo.png"
+    alt="AIIPL Logo"
+    className="h-6 w-6 object-contain"
+  />
+</div>
           <div>
-            <div className="text-lg font-semibold tracking-tight text-slate-900">AIIPL</div>
+            <div className="text-lg font-semibold tracking-tight text-slate-900">Anubhav Infotech</div>
             <div className="text-xs text-slate-500">Modern Infrastructure Solutions</div>
           </div>
         </Link>
