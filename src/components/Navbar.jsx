@@ -47,7 +47,7 @@ export default function Navbar() {
          <img
   src="/aiipl-logo.png"
   alt="AIIPL Logo"
-  className="h-12 w-12 object-contain"
+  className="h-16 w-16 object-contain"
 />
           <div>
             <div className="text-lg font-semibold tracking-tight text-slate-900">Anubhav Infotech</div>

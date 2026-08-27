@@ -13,10 +13,12 @@ export default function Footer() {
           {/* Logo + About */}
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white">
-                <Server size={18} />
-              </div>
-              <span className="font-semibold text-slate-800 text-lg">AIIPL</span>
+              <img
+  src="/aiipl-logo.png"
+  alt="AIIPL Logo"
+  className="h-16 w-16 object-contain"
+/>
+              <span className="font-semibold text-slate-800 text-lg">Anubhav Infotech</span>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed">
               Modern infrastructure solutions designed to scale your business
@@ -61,8 +63,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-          <p>© {new Date().getFullYear()} AIIPL. All rights reserved.</p>
-          <div className="flex gap-4">
+<p>© {new Date().getFullYear()} Anubhav Infotech India Pvt. Ltd. All rights reserved.</p>          <div className="flex gap-4">
             <a href="#" className="hover:text-teal-600 transition">
               Privacy Policy
             </a>
