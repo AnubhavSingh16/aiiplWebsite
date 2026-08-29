@@ -34,35 +34,56 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-      } ${
-        scrolled
-          ? "border-b border-blue-100 bg-white/85 shadow-[0_12px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl"
-          : "bg-transparent"
-      }`}
-    >
+  className={`fixed left-0 right-0 top-0 z-50 overflow-hidden rounded-b-[32px] transition-all duration-300 ${
+    showNavbar ? "translate-y-0" : "-translate-y-full"
+  } ${
+    scrolled
+      ? "border-b border-blue-100 bg-white/85 shadow-[0_12px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl"
+      : "bg-transparent"
+  }`}
+>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-3">
-         <img
-  src="/aiipl-logo.png"
-  alt="AIIPL Logo"
-  className="h-16 w-16 object-contain"
-/>
+          <img
+            src="/aiipl-logo.png"
+            alt="AIIPL Logo"
+            className="h-16 w-16 object-contain"
+          />
           <div>
-            <div className="text-lg font-semibold tracking-tight text-slate-900">Anubhav Infotech</div>
-            <div className="text-xs text-slate-500">Modern Infrastructure Solutions</div>
+            <div className="text-lg font-semibold tracking-tight text-slate-900">
+              Anubhav Infotech
+            </div>
+            <div className="text-xs text-slate-500">
+              Modern Infrastructure Solutions
+            </div>
           </div>
         </Link>
-
-        <div className="hidden items-center gap-8 md:flex">
+        <div
+          className="
+    absolute
+    left-1/2
+    top-2
+    bottom-2
+    hidden
+    -translate-x-1/2
+    items-center
+    gap-8
+    rounded-b-[24px]
+    border-b-4
+    border-[#669af3]
+    px-10
+    md:flex
+  "
+        >
           {navItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.link}
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-blue-700" : "text-slate-600 hover:text-blue-700"
+                  isActive
+                    ? "text-blue-600 "
+                    : "text-slate-600 hover:text-blue-700"
                 }`
               }
             >
@@ -72,12 +93,12 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link
+          {/* <Link
             to="/build-pc"
             className="rounded-full border border-blue-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700"
           >
             Build Your PC
-          </Link>
+          </Link> */}
           <Link
             to="/cart"
             className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-gradient-to-r from-blue-600 to-sky-400 px-4 py-2.5 text-sm font-medium text-white transition hover:border-blue-200 hover:text-blue-100"
@@ -103,7 +124,11 @@ export default function Navbar() {
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </button>
       </div>
 

@@ -93,131 +93,85 @@ export default function Home() {
   const promoBanners = banners.map((banner) => ({ ...banner, id: banner._id }));
 
   return (
-    <div className="min-h-screen bg-[#f8fbff] text-slate-900">
-      <style>
-        {`
-          @keyframes heroCopySlide {
-            from {
-              opacity: 0;
-              transform: translateX(var(--hero-copy-shift, 28px));
-              filter: blur(8px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-              filter: blur(0);
-            }
-          }
-
-          @keyframes heroCopyItem {
-            from {
-              opacity: 0;
-              transform: translateY(16px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          @media (prefers-reduced-motion: no-preference) {
-            .hero-copy-slide {
-              animation: heroCopySlide 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
-              will-change: opacity, transform, filter;
-            }
-
-            .hero-copy-slide [data-hero-copy] {
-              animation: heroCopyItem 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
-              will-change: opacity, transform;
-            }
-
-            .hero-copy-slide [data-hero-copy="meta"] {
-              animation-delay: 80ms;
-            }
-
-            .hero-copy-slide [data-hero-copy="title"] {
-              animation-delay: 150ms;
-            }
-
-            .hero-copy-slide [data-hero-copy="description"] {
-              animation-delay: 220ms;
-            }
-
-            .hero-copy-slide [data-hero-copy="actions"] {
-              animation-delay: 300ms;
-            }
-          }
-        `}
-      </style>
-      <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
-        <div className="mx-auto h-[620px]  rounded-b-[56px] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.28),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(236,72,153,0.16),_transparent_24%),radial-gradient(circle_at_50%_10%,_rgba(16,185,129,0.14),_transparent_28%),linear-gradient(180deg,_#ffffff_0%,_#eef6ff_52%,_#f8fbff_100%)]" />
-      </div>
-      <div className="absolute -top-10 left-1/2 -z-10 h-64 w-64 -translate-x-[520px] rounded-full bg-cyan-300/20 blur-3xl" />
-      <div className="absolute right-0 top-24 -z-10 h-72 w-72 rounded-full bg-pink-300/20 blur-3xl" />
-
+    <div className="min-h-screen  text-slate-900">
       <Navbar />
 
       <section className="px-0 pb-20 pt-24 ">
         {showHeroSkeleton ? (
           <HeroSkeleton />
         ) : (
-        <div className="overflow-hidden  lg:min-h-screen">
-          <div className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-[1600px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="relative overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
-              {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(148,163,184,0.14),_transparent_30%),linear-gradient(180deg,_rgba(255,255,255,0.96)_0%,_rgba(248,250,252,0.96)_100%)]" /> */}
-              {/* <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-slate-200/60 blur-3xl" /> */}
+          <div className="overflow-hidden  lg:min-h-screen">
+            <div
+              className="
+    mx-auto
+    grid
+    min-h-[calc(100vh-6rem)]
+    max-w-[1600px]
+    overflow-hidden
+    rounded-t-[80px]
 
-              <div
-                key={activeSlide.id}
-                className="hero-copy-slide relative"
-                style={{
-                  "--hero-copy-shift":
-                    slideDirection === "previous" ? "-28px" : "28px",
-                }}
-              >
+    bg-gradient-to-b
+    from-[#84aff8]
+    to-[#ffffff]
+    items-stretch
+    lg:grid-cols-[1.02fr_0.98fr]
+  "
+            >
+              <div className="relative overflow-hidden px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
+                {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(148,163,184,0.14),_transparent_30%),linear-gradient(180deg,_rgba(255,255,255,0.96)_0%,_rgba(248,250,252,0.96)_100%)]" /> */}
+                {/* <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-slate-200/60 blur-3xl" /> */}
+
                 <div
-                  data-hero-copy="eyebrow"
-                  className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm backdrop-blur"
+                  key={activeSlide.id}
+                  className="hero-copy-slide relative"
+                  style={{
+                    "--hero-copy-shift":
+                      slideDirection === "previous" ? "-28px" : "28px",
+                  }}
                 >
-                  <Sparkles className="h-4 w-4" />
-                  {activeSlide.eyebrow}
-                </div>
-
-                <div className="mt-6 min-h-[320px] lg:min-h-[380px]">
-                  <h1
-                    data-hero-copy="title"
-                    className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-slate-950 md:text-5xl"
-                  >
-                    {activeSlide.title}
-                  </h1>
-                  <p
-                    data-hero-copy="description"
-                    className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"
-                  >
-                    {activeSlide.description}
-                  </p>
-
                   <div
-                    data-hero-copy="actions"
-                    className="mt-10 flex flex-wrap gap-4"
+                    data-hero-copy="eyebrow"
+                    className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-4 py-2 text-sm font-medium text-blue-700 shadow-sm backdrop-blur"
                   >
-                    <Link
-                      to="/products"
-                      className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${heroAccent} px-6 py-3.5 font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.16)] transition hover:scale-[1.01]`}
-                    >
-                      Explore Products
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link
-                      to="/build-pc"
-                      className="rounded-full border border-emerald-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700"
-                    >
-                      Build Custom PC
-                    </Link>
+                    <Sparkles className="h-4 w-4" />
+                    {activeSlide.eyebrow}
                   </div>
-                </div>
 
-                {/* <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-slate-200 bg-white px-4 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
+                  <div className="mt-6 min-h-[320px] lg:min-h-[380px]">
+                    <h1
+                      data-hero-copy="title"
+                      className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-tight text-sky-950 md:text-5xl"
+                    >
+                      {activeSlide.title}
+                    </h1>
+                    <p
+                      data-hero-copy="description"
+                      className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"
+                    >
+                      {activeSlide.description}
+                    </p>
+
+                    <div
+                      data-hero-copy="actions"
+                      className="mt-10 flex flex-wrap gap-4"
+                    >
+                      <Link
+                        to="/products"
+                        className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${heroAccent} px-6 py-3.5 font-semibold text-white shadow-[0_18px_40px_rgba(15,23,42,0.16)] transition hover:scale-[1.01]`}
+                      >
+                        Explore Products
+                        <ChevronRight className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        to="/build-pc"
+                        className="rounded-full border border-emerald-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700"
+                      >
+                        Build Custom PC
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-slate-200 bg-white px-4 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
                   <div>
                     <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                       Featured Product
@@ -253,93 +207,93 @@ export default function Home() {
                     </button>
                   </div>
                 </div> */}
+                </div>
               </div>
-            </div>
 
-            <div className="relative min-h-[420px] overflow-hidden  p-5 sm:p-7 lg:min-h-screen ">
-              <div className="absolute inset-0 " />
+              <div className="relative min-h-[420px] overflow-hidden  p-5 sm:p-7 lg:min-h-screen ">
+                <div className="absolute inset-0 " />
 
-              <div className="relative h-full rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-md">
-                <div className="relative h-full overflow-hidden rounded-[28px]">
-                  {heroSlides.map((slide, index) => {
-                    const isActive = index === currentSlide;
+                <div className="relative h-full rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-md">
+                  <div className="relative h-full overflow-hidden rounded-[28px]">
+                    {heroSlides.map((slide, index) => {
+                      const isActive = index === currentSlide;
 
-                    return (
-                      <div
-                        key={slide.id}
-                        className={`absolute inset-0 transition-all duration-700 ${
-                          isActive
-                            ? "translate-x-0 opacity-100"
-                            : index < currentSlide
-                              ? "-translate-x-8 opacity-0"
-                              : "translate-x-8 opacity-0"
-                        }`}
-                      >
-                        {slide.image ? (
-                          <img
-                            src={slide.image}
-                            alt={slide.title}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div
-                            className={`h-full w-full bg-gradient-to-br ${heroAccent}`}
-                          />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent" />
+                      return (
+                        <div
+                          key={slide.id}
+                          className={`absolute inset-0 transition-all duration-700 ${
+                            isActive
+                              ? "translate-x-0 opacity-100"
+                              : index < currentSlide
+                                ? "-translate-x-8 opacity-0"
+                                : "translate-x-8 opacity-0"
+                          }`}
+                        >
+                          {slide.image ? (
+                            <img
+                              src={slide.image}
+                              alt={slide.title}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className={`h-full w-full bg-gradient-to-br ${heroAccent}`}
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent" />
 
-                        <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-5">
-                          <div className="rounded-full border border-white/15 bg-slate-950/35 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur">
-                            {slide.eyebrow}
-                          </div>
-                        </div>
-
-                        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-                          <div className="max-w-lg rounded-[28px] border border-white/40 bg-slate-600/10 p-5 text-white shadow-[0_18px_40px_rgba(15,43,42,0.50)] backdrop-blur-md">
-                            <div className="text-2xl font-semibold">
-                              {slide.title}
+                          {/* <div className="absolute left-0 right-0 top-0 flex items-center justify-between p-5">
+                            <div className="rounded-full border border-white/15 bg-slate-950/35 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur">
+                              {slide.eyebrow}
                             </div>
-                            {/* <p className="mt-3 text-sm leading-7 text-slate-200">
+                          </div> */}
+
+                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+                            <div className="max-w-lg rounded-[28px] border border-white/40 bg-slate-600/10 p-5 text-white shadow-[0_18px_40px_rgba(15,43,42,0.50)] backdrop-blur-md">
+                              <div className="text-2xl font-semibold">
+                                {slide.title}
+                              </div>
+                              {/* <p className="mt-3 text-sm leading-7 text-slate-200">
                               {slide.description}
                             </p> */}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    {heroSlides.map((slide, index) => (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        onClick={() => {
-                          if (index !== currentSlide) {
-                            updateHeroSlide(
-                              index,
-                              index < currentSlide ? "previous" : "next"
-                            );
-                          }
-                        }}
-                        className={`h-2.5 rounded-full transition-all duration-300 ${
-                          index === currentSlide
-                            ? "w-10 bg-white"
-                            : "w-2.5 bg-white/45 hover:bg-white/70"
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
+                      );
+                    })}
                   </div>
-                  {/* <div className="text-sm font-medium text-white/85">
+
+                  <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2">
+                      {heroSlides.map((slide, index) => (
+                        <button
+                          key={slide.id}
+                          type="button"
+                          onClick={() => {
+                            if (index !== currentSlide) {
+                              updateHeroSlide(
+                                index,
+                                index < currentSlide ? "previous" : "next",
+                              );
+                            }
+                          }}
+                          className={`h-2.5 rounded-full transition-all duration-300 ${
+                            index === currentSlide
+                              ? "w-10 bg-white"
+                              : "w-2.5 bg-white/45 hover:bg-white/70"
+                          }`}
+                          aria-label={`Go to slide ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    {/* <div className="text-sm font-medium text-white/85">
                     0{currentSlide + 1} / 0{heroSlides.length}
                   </div> */}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         )}
       </section>
 
@@ -372,8 +326,9 @@ export default function Home() {
               Create a custom PC build with live visual assembly.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
-              Choose processors, graphics, memory, storage, cooling, and display options,
-              then watch your machine come together in a more dynamic builder experience.
+              Choose processors, graphics, memory, storage, cooling, and display
+              options, then watch your machine come together in a more dynamic
+              builder experience.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -399,7 +354,12 @@ export default function Home() {
                 <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-blue-500" />
               </div>
               <div className="mt-5 space-y-3">
-                {["CPU installed", "GPU selected", "RAM configured", "Cooling mounted"].map((item, index) => (
+                {[
+                  "CPU installed",
+                  "GPU selected",
+                  "RAM configured",
+                  "Cooling mounted",
+                ].map((item, index) => (
                   <div
                     key={item}
                     className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-4 py-3 text-sm text-slate-200 animate-pulse"
@@ -424,72 +384,437 @@ export default function Home() {
         />
       )}
 
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-              Why this design works
-            </p>
+      <SolutionsSection />
 
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-              A fresh homepage built around clarity and confidence.
+     {/* WHY CHOOSE US */}
+
+      <section className="relative overflow-hidden px-5 py-20 sm:px-6 lg:py-12">
+        {/* Background glow */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
+
+        <div className="relative mx-auto max-w-7xl">
+          {/* ================= HEADER ================= */}
+
+          <div className="mx-auto max-w-3xl text-center">
+            {/* <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/70 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-600">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              Why choose us
+            </div> */}
+
+            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.035em] text-[#071A3A] sm:text-4xl lg:text-[42px]">
+             Why choose us for
+              <span className="text-blue-600"> your technology needs.</span>
             </h2>
 
-            <p className="mt-4 text-lg leading-8 text-slate-600">
-              The new layout uses light surfaces, blue accents, improved spacing,
-              and more polished text so the homepage feels professional and easy to trust.
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-500 sm:text-base">
+              Reliable infrastructure, quality products and expert support —
+              everything working together to keep your business moving.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {highlights.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.title}
-                  className="rounded-[28px] border border-blue-300 bg-gradient-to-br from-blue-100 via-white to-blue-200 p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(37,99,235,0.15)]"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
-                    <Icon className="h-6 w-6" />
+          {/* ================= FEATURES ================= */}
+
+          <div className="relative mx-auto mt-14 max-w-5xl">
+            {/* Connecting line */}
+            <div
+              className="
+          pointer-events-none
+          absolute
+          left-[16.66%]
+          right-[16.66%]
+          top-1/2
+          hidden
+          h-px
+          bg-gradient-to-r
+          from-transparent
+          via-blue-200
+          to-transparent
+          md:block
+        "
+            />
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {highlights.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <div key={item.title} className="group relative">
+                    {/* ================= CARD ================= */}
+
+                    <div
+                      className="
+                  relative
+                  h-[290px]
+                  overflow-hidden
+                  rounded-[26px]
+                  border
+                  border-white
+                  bg-white/75
+                  p-6
+                  shadow-[0_15px_45px_rgba(15,23,42,0.07)]
+                  backdrop-blur-xl
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:border-blue-200
+                  hover:shadow-[0_20px_45px_rgba(37,99,235,0.10)]
+                "
+                    >
+                      {/* Subtle background glow */}
+                      <div
+                        className="
+                    pointer-events-none
+                    absolute
+                    -right-20
+                    -top-20
+                    h-40
+                    w-40
+                    rounded-full
+                    bg-blue-400/10
+                    blur-3xl
+                    opacity-0
+                    transition-opacity
+                    duration-300
+                    group-hover:opacity-100
+                  "
+                      />
+
+                      {/* Top accent line */}
+                      <div
+                        className="
+                    absolute
+                    left-6
+                    right-6
+                    top-0
+                    h-[2px]
+                    origin-left
+                    scale-x-0
+                    rounded-full
+                    bg-gradient-to-r
+                    from-blue-500
+                    to-sky-400
+                    transition-transform
+                    duration-300
+                    group-hover:scale-x-100
+                  "
+                      />
+
+                      {/* ================= ICON + NUMBER ================= */}
+
+                      <div className="relative flex items-center justify-between">
+                        <div
+                          className="
+                      flex
+                      h-12
+                      w-12
+                      items-center
+                      justify-center
+                      rounded-2xl
+                      bg-gradient-to-br
+                      from-blue-50
+                      to-sky-100
+                      text-blue-600
+                      shadow-sm
+                      transition-colors
+                      duration-300
+                      group-hover:from-blue-600
+                      group-hover:to-sky-500
+                      group-hover:text-white
+                    "
+                        >
+                          <Icon className="h-5 w-5" />
+                        </div>
+
+                        <span
+                          className="
+                      text-4xl
+                      font-bold
+                      tracking-[-0.06em]
+                      text-slate-100
+                      transition-colors
+                      duration-300
+                      group-hover:text-blue-100
+                    "
+                        >
+                          0{index + 1}
+                        </span>
+                      </div>
+
+                      {/* ================= CONTENT ================= */}
+
+                      <div className="relative mt-7">
+                        <h3 className="text-lg font-semibold tracking-tight text-[#071A3A]">
+                          {item.title}
+                        </h3>
+
+                        <p className="mt-2.5 line-clamp-3 text-sm leading-6 text-slate-500">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* ================= BOTTOM ================= */}
+
+                      <div
+                        className="
+                    absolute
+                    bottom-6
+                    left-6
+                    right-6
+                    flex
+                    items-center
+                  "
+                      >
+                        {/* Indicator */}
+                        <div className="h-1 w-10 rounded-full bg-blue-100">
+                          <div className="h-full w-full rounded-full bg-blue-500/70" />
+                        </div>
+
+                        {/* Arrow */}
+                        <div
+                          className="
+                      ml-auto
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-full
+                      border
+                      border-slate-100
+                      text-slate-300
+                      transition-all
+                      duration-300
+                      group-hover:border-blue-200
+                      group-hover:bg-blue-600
+                      group-hover:text-white
+                    "
+                        >
+                          <ChevronRight
+                            className="
+                        h-3.5
+                        w-3.5
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-0.5
+                      "
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  <h3 className="mt-6 text-xl font-semibold text-slate-900">
-                    {item.title}
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-7 text-slate-600">
-                    {item.description}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+
+          {/* ================= TRUST STRIP ================= */}
+
+          <div
+            className="
+        mx-auto
+        mt-10
+        flex
+        max-w-4xl
+        flex-wrap
+        items-center
+        justify-center
+        gap-x-8
+        gap-y-3
+        text-xs
+        text-slate-400
+      "
+          ></div>
         </div>
       </section>
 
-      <SolutionsSection />
+      {/* Talk to expert */}
+      <section className="px-5 pb-20 pt-8 sm:px-6 lg:pb-24">
+        <div
+          className="
+      relative
+      mx-auto
+      max-w-7xl
+      overflow-hidden
+      rounded-[32px]
+      
 
-      <section className="px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-7xl rounded-[28px] border border-blue-100 bg-[radial-gradient(circle_at_top_left,_rgba(25,185,129,0.4),_transparent_28%),linear-gradient(155deg,_#06121f_0%,_#0f172a_48%,_#0b2745_100%)] p-10 text-center text-white shadow-[0_24px_70px_rgba(37,99,235,0.22)]">
-          <h2 className="text-4xl font-semibold tracking-tight">
-            Talk to an expert.
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-blue-50">
-            Have a question? Our team is here to help you find the right solution for your business.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/contact"
-              className="rounded-full bg-white px-6 py-3.5 font-semibold text-blue-700 transition hover:bg-slate-100"
-            >
-              Contact Us
-            </Link>
-            <Link
-              to="/about"
-              className="rounded-full border border-white/40 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10"
-            >
-              About Us
-            </Link>
+      bg-gradient-to-b
+      from-[#05307a]
+
+      to-[#75b0da]
+      px-7
+      py-10
+      text-white
+      shadow-[0_25px_70px_rgba(7,26,58,0.22)]
+      sm:px-10
+      lg:px-14
+      lg:py-12
+    "
+        >
+          {/* Background decoration */}
+          <div
+            className="
+        pointer-events-none
+        absolute
+        -right-24
+        -top-32
+        h-80
+        w-80
+        rounded-full
+        bg-blue-400/20
+        blur-[100px]
+      "
+          />
+
+          <div
+            className="
+        pointer-events-none
+        absolute
+        -bottom-32
+        left-1/3
+        h-64
+        w-64
+        rounded-full
+        bg-sky-400/10
+        blur-[90px]
+      "
+          />
+
+          {/* Content */}
+          <div
+            className="
+        relative
+        flex
+        flex-col
+        gap-8
+        lg:flex-row
+        lg:items-center
+        lg:justify-between
+      "
+          >
+            {/* Left */}
+            <div className="max-w-2xl">
+              {/* <div
+                className="
+            inline-flex
+            items-center
+            gap-2
+            rounded-full
+            border
+            border-white/15
+            bg-white/10
+            px-3
+            py-1.5
+            text-[10px]
+            font-semibold
+            uppercase
+            tracking-[0.18em]
+            text-blue-100
+            backdrop-blur
+          "
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
+                Need help?
+              </div> */}
+
+              <h2
+                className="
+            mt-4
+            text-3xl
+            font-semibold
+            tracking-[-0.035em]
+            sm:text-4xl
+          "
+              >
+                Talk to an
+                <span className="text-sky-300"> expert.</span>
+              </h2>
+
+              <p className="mt-3 max-w-xl text-sm leading-6 text-white/90 sm:text-base">
+                Not sure what you need? Our team can help you find the right
+                products and infrastructure for your business.
+              </p>
+            </div>
+
+            {/* Right actions */}
+            <div className="relative flex shrink-0 flex-wrap gap-3">
+              <Link
+                to="/contact"
+                className="
+            inline-flex
+            items-center
+            gap-2
+            rounded-full
+            bg-white
+            px-5
+            py-3
+            text-sm
+            font-semibold
+            text-blue-700
+            shadow-[0_8px_25px_rgba(0,0,0,0.15)]
+            transition-all
+            duration-300
+            hover:-translate-y-0.5
+            hover:bg-blue-50
+          "
+              >
+                Contact Us
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+
+              <Link
+                to="/about"
+                className="
+            inline-flex
+            items-center
+            rounded-full
+            border
+            border-white
+            bg-white/10
+            px-5
+            py-3
+            text-sm
+            font-semibold
+            text-white
+            backdrop-blur
+            transition-all
+            duration-300
+            hover:-translate-y-0.5
+            hover:border-white/35
+            hover:bg-white/15
+          "
+              >
+                About Us
+              </Link>
+            </div>
+          </div>
+
+          {/* Bottom detail */}
+          <div
+            className="
+        relative
+        mt-8
+        flex
+        flex-wrap
+        items-center
+        gap-x-6
+        gap-y-2
+        border-t
+        border-white/10
+        pt-5
+        text-[11px]
+        text-white
+      "
+          >
+            <span>Product guidance</span>
+
+            <span className="h-1 w-1 rounded-full bg-white" />
+
+            <span>Infrastructure solutions</span>
+
+            <span className="h-1 w-1 rounded-full bg-white" />
+
+            <span>Expert support</span>
           </div>
         </div>
       </section>
